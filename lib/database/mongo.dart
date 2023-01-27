@@ -3,12 +3,9 @@ import 'package:mongo_dart/mongo_dart.dart';
 class MongoDB {
   late final Db db;
 
-  MongoDB() {
-    db = Db(
-        "mongodb+srv://usuario_upb:contrasena_upb@cluster0.ya3bz0q.mongodb.net/?retryWrites=true&w=majority/proyecto");
-  }
 
   Future<void> connect() async {
+    db = await Db.create("mongodb+srv://usuario_upb:contrasena_upb@cluster0.ya3bz0q.mongodb.net/proyecto?retryWrites=true&w=majority");
     await db.open();
   }
 

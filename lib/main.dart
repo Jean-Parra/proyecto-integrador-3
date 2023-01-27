@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

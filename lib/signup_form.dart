@@ -15,12 +15,12 @@ class _SignupPageState extends State<SignupPage> {
   String _passwordValue = "";
   final _formKey = GlobalKey<FormState>();
   final MongoDB mongoDB = MongoDB();
-  var _name = TextEditingController();
-  var _lastname = TextEditingController();
-  var _number = TextEditingController();
-  var _email = TextEditingController();
-  var _password = TextEditingController();
-  var _confirmPassword = TextEditingController();
+  TextEditingController  _name = new TextEditingController();
+  TextEditingController  _lastname = new TextEditingController();
+  TextEditingController _number = new TextEditingController();
+  TextEditingController _email = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+  TextEditingController _confirmPassword = new TextEditingController();
   final Map<String, dynamic> _data = {};
   bool _isLoading = false;
   String? _errorMessage;
@@ -28,7 +28,6 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    mongoDB.connect();
   }
 
   @override
@@ -56,7 +55,6 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                onSaved: (input) => _name = input as TextEditingController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   labelText: 'Nombre',
@@ -79,7 +77,6 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                onSaved: (input) => _lastname = input as TextEditingController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   labelText: 'Apellido',
@@ -102,7 +99,6 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                onSaved: (input) => _number = input as TextEditingController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.phone),
                   labelText: 'Número de teléfono',
@@ -128,7 +124,6 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                onSaved: (input) => _email = input as TextEditingController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.email),
                   labelText: 'Correo',
@@ -154,7 +149,6 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                onSaved: (input) => _password = input as TextEditingController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.lock),
                   labelText: 'Contraseña',
@@ -182,8 +176,6 @@ class _SignupPageState extends State<SignupPage> {
                   }
                   return null;
                 },
-                onSaved: (input) =>
-                    _confirmPassword = input as TextEditingController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.lock),
                   labelText: 'Confirmar contraseña',
@@ -232,7 +224,6 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future<void> _submit() async {
-    print(_data);
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
