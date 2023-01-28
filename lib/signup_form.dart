@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/database/mongo.dart';
+import 'package:proyecto_integrador_3/home.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 
 class SignupPage extends StatefulWidget {
@@ -15,12 +16,12 @@ class _SignupPageState extends State<SignupPage> {
   String _passwordValue = "";
   final _formKey = GlobalKey<FormState>();
   final MongoDB mongoDB = MongoDB();
-  TextEditingController  _name = new TextEditingController();
-  TextEditingController  _lastname = new TextEditingController();
-  TextEditingController _number = new TextEditingController();
-  TextEditingController _email = new TextEditingController();
-  TextEditingController _password = new TextEditingController();
-  TextEditingController _confirmPassword = new TextEditingController();
+  TextEditingController? _name;
+  TextEditingController? _lastname;
+  TextEditingController? _number;
+  TextEditingController? _email;
+  TextEditingController? _password;
+  TextEditingController? _confirmPassword;
   final Map<String, dynamic> _data = {};
   bool _isLoading = false;
   String? _errorMessage;
@@ -71,6 +72,7 @@ class _SignupPageState extends State<SignupPage> {
                 height: 20,
               ),
               TextFormField(
+                controller: _lastname,
                 validator: (input) {
                   if (input!.isEmpty) {
                     return 'Por favor ingrese un apellido';
@@ -93,12 +95,14 @@ class _SignupPageState extends State<SignupPage> {
                 height: 20,
               ),
               TextFormField(
+                controller: _number,
                 validator: (input) {
                   if (input!.isEmpty) {
                     return 'Por favor ingrese un número de teléfono';
                   }
                   return null;
                 },
+                onSaved: (newValue) => _number,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.phone),
                   labelText: 'Número de teléfono',
@@ -115,6 +119,7 @@ class _SignupPageState extends State<SignupPage> {
                 height: 20,
               ),
               TextFormField(
+                controller: _email,
                 validator: (input) {
                   if (input!.isEmpty) {
                     return 'Por favor ingrese un correo electrónico';
@@ -140,6 +145,7 @@ class _SignupPageState extends State<SignupPage> {
                 height: 20,
               ),
               TextFormField(
+                controller: _password,
                 validator: (input) {
                   if (input!.isEmpty) {
                     return 'Por favor ingrese una contraseña';
@@ -167,6 +173,7 @@ class _SignupPageState extends State<SignupPage> {
                 height: 20,
               ),
               TextFormField(
+                controller: _confirmPassword,
                 validator: (input) {
                   if (input!.isEmpty) {
                     return 'Por favor ingrese una contraseña';
@@ -232,6 +239,8 @@ class _SignupPageState extends State<SignupPage> {
       try {
         await mongoDB.connect();
         await mongoDB.insert('usuarios', _data);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => (const HomePage())));
       } catch (e) {
         setState(() {
           _isLoading = false;

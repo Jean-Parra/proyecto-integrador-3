@@ -1,8 +1,9 @@
-// ignore_for_file: library_private_types_in_public_api, unused_field
+// ignore_for_file: library_private_types_in_public_api, unused_field, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/home.dart';
 import 'package:proyecto_integrador_3/signup_form.dart';
+import 'package:proyecto_integrador_3/database/mongo.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   String? _errorMessage;
   late AnimationController _animationController;
   late Animation<double> _animation;
+  final MongoDB mongoDB = MongoDB();
 
   @override
   void initState() {
@@ -150,7 +152,19 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         _isLoading = true;
         _errorMessage = null;
       });
-      try {} catch (e) {
+      try {
+        await mongoDB.connect();
+        var validacion = await mongoDB.login(_email, _password);
+        if (validacion == true) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => (const HomePage())));
+        } else {
+          setState(() {
+            _isLoading = false;
+            _errorMessage = "Credenciales invalidas";
+          });
+        }
+      } catch (e) {
         setState(() {
           _isLoading = false;
           _errorMessage = e.toString();

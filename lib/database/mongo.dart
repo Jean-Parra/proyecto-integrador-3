@@ -1,11 +1,15 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 class MongoDB {
-  late final Db db;
+  late Db db;
 
+  MongoDB() {
+    connect();
+  }
 
   Future<void> connect() async {
-    db = await Db.create("mongodb+srv://usuario_upb:contrasena_upb@cluster0.ya3bz0q.mongodb.net/proyecto?retryWrites=true&w=majority");
+    db = await Db.create(
+        "mongodb+srv://usuario_upb:contrasena_upb@cluster0.ya3bz0q.mongodb.net/proyecto?retryWrites=true&w=majority");
     await db.open();
   }
 
@@ -29,5 +33,15 @@ class MongoDB {
 
   Future<void> close() async {
     await db.close();
+  }
+
+  Future<bool> login(String email, String password) async {
+    final user = await db.collection("usuarios").findOne({"correo": email});
+    await db.close();
+    if (user != null && user['contrasena'] == password) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
