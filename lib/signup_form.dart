@@ -165,7 +165,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
                 onChanged: (value) =>
-                    {_data['contraseña'] = value, _passwordValue = value},
+                    {_data['contrasena'] = value, _passwordValue = value},
                 obscureText: true,
                 style: const TextStyle(color: Colors.black),
               ),
