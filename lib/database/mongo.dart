@@ -37,7 +37,6 @@ class MongoDB {
 
   Future<bool> login(String email, String password) async {
     final user = await db.collection("usuarios").findOne({"correo": email});
-    await db.close();
     if (user != null && user['contrasena'] == password) {
       return true;
     } else {

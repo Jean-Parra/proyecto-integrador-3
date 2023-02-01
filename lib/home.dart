@@ -32,9 +32,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _getCurrentLocation() async {
-    _currentPosition = await geolocator.Geolocator.getCurrentPosition(
-        desiredAccuracy: geolocator.LocationAccuracy.high);
-    setState(() {});
+    try {
+      _currentPosition = await geolocator.Geolocator.getCurrentPosition(
+          desiredAccuracy: geolocator.LocationAccuracy.high);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
