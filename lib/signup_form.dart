@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_field, unrelated_type_equality_checks, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_webservice/directions.dart';
 import 'package:proyecto_integrador_3/database/mongo.dart';
 import 'package:proyecto_integrador_3/home.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
@@ -20,6 +21,10 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController? _lastname;
   TextEditingController? _number;
   TextEditingController? _email;
+  TextEditingController? _usuario;
+  TextEditingController? _conductor;
+  bool _isCheckedusuario = false;
+  bool _isCheckedconductor = false;
   TextEditingController? _password;
   TextEditingController? _confirmPassword;
   final Map<String, dynamic> _data = {};
@@ -46,7 +51,7 @@ class _SignupPageState extends State<SignupPage> {
                 backgroundImage: AssetImage('assets/profile.jpg'),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               TextFormField(
                 controller: _name,
@@ -69,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
                 style: const TextStyle(color: Colors.black),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               TextFormField(
                 controller: _lastname,
@@ -92,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                 style: const TextStyle(color: Colors.black),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               TextFormField(
                 controller: _number,
@@ -116,7 +121,7 @@ class _SignupPageState extends State<SignupPage> {
                 style: const TextStyle(color: Colors.black),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               TextFormField(
                 controller: _email,
@@ -141,8 +146,66 @@ class _SignupPageState extends State<SignupPage> {
                 onChanged: (value) => {_data['correo'] = value},
                 style: const TextStyle(color: Colors.black),
               ),
+              TextFormField(
+                enabled: true,
+                controller: _usuario,
+                validator: (input) {
+                  if (input!.isEmpty) {
+                    return 'Por favor marca la casilla';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  icon: Icon(Icons.verified_user_outlined),
+                  labelText: "Usuario",
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  suffixIcon: Checkbox(
+                    value: _isCheckedusuario,
+                    onChanged: (value) {
+                      setState(() {
+                        _isCheckedusuario = value!;
+                      });
+                    },
+                  ),
+                ),
+                onChanged: (value) => {_data['usuario'] = value},
+                style: const TextStyle(color: Colors.black),
+              ),
+              TextFormField(
+                enabled: true,
+                controller: _conductor,
+                validator: (input) {
+                  if (input!.isEmpty) {
+                    return 'Por favor marca la casilla';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  icon: Icon(Icons.person),
+                  labelText: "Conductor",
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  suffixIcon: Checkbox(
+                    value: _isCheckedconductor,
+                    onChanged: (value) {
+                      setState(() {
+                        _isCheckedconductor = value!;
+                      });
+                    },
+                  ),
+                ),
+                onChanged: (value) => {_data['conductor'] = value},
+                style: const TextStyle(color: Colors.black),
+              ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               TextFormField(
                 controller: _password,
@@ -170,7 +233,7 @@ class _SignupPageState extends State<SignupPage> {
                 style: const TextStyle(color: Colors.black),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               TextFormField(
                 controller: _confirmPassword,
@@ -196,7 +259,7 @@ class _SignupPageState extends State<SignupPage> {
                 style: const TextStyle(color: Colors.black),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               _isLoading
                   ? const CircularProgressIndicator()
