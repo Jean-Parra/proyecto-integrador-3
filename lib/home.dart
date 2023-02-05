@@ -1,25 +1,33 @@
-// ignore_for_file: library_private_types_in_public_api, unnecessary_null_comparison, prefer_const_constructors
+// ignore_for_file: avoid_print
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' hide Polyline;
+import 'package:location/location.dart' as location;
+import 'package:google_maps_webservice/directions.dart' hide Polyline;
+import 'package:geocoding/geocoding.dart' as nueva;
+import 'package:polyline_do/polyline_do.dart' as polyline_do;
+
+const kGoogleApiKey = "AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final Location _location = Location();
-  late bool _permissionGranted;
   late geolocator.Position _currentPosition;
-  final originController = TextEditingController();
-  final destinationController = TextEditingController();
+  late String _destination;
+  final GoogleMapsDirections _directions =
+      GoogleMapsDirections(apiKey: kGoogleApiKey);
+
+  final location.Location _location = location.Location();
+  late String _origin;
+  late bool _permissionGranted;
+  final Set<polyline_do.Polyline> _polylines = <polyline_do.Polyline>{};
 
   @override
   void initState() {
@@ -29,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _getPermission() async {
-    _permissionGranted = (await _location.hasPermission()) as bool;
+    _permissionGranted = (await _location.requestPermission()) as bool;
     if (_permissionGranted == false) {
       _permissionGranted = (await _location.requestPermission()) as bool;
     }
@@ -45,17 +53,33 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> getAddress(String searchTerm) async {
-    String url =
-        'https://maps.googleapis.com/maps/api/geocode/json?address=$searchTerm&key=AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA';
+  Future<void> _showRoute() async {
+    try {
+      final origin =
+          await nueva.locationFromAddress(_origin, localeIdentifier: "es_ES");
+      final destination = await nueva.locationFromAddress(_destination,
+          localeIdentifier: "es_ES");
 
-    var response = await http.get(url as Uri);
+      final originLocation =
+          Location(lat: origin[0].latitude, lng: origin[0].longitude);
+      final destinationLocation =
+          Location(lat: destination[0].latitude, lng: destination[0].longitude);
 
-    Map data = json.decode(response.body);
+      final result = await _directions.directionsWithLocation(
+        originLocation,
+        destinationLocation,
+      );
 
-    String address = data['results'][0]['formatted_address'];
-
-    print(address);
+      final points = polyline_do.Polyline.Decode(
+        precision: 5,
+        encodedString: result.routes[0].overviewPolyline.points,
+      );
+      setState(() {
+        _polylines.add(points);
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -64,19 +88,6 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
-          SizedBox(
-              height: MediaQuery.of(context).size.height - 120,
-              width: MediaQuery.of(context).size.width,
-              child: _currentPosition == null
-                  ? const Center(child: CircularProgressIndicator())
-                  : GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(_currentPosition.latitude,
-                            _currentPosition.longitude),
-                        zoom: 17.0,
-                      ),
-                      myLocationEnabled: true,
-                    )),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -87,11 +98,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                   child: TextField(
-                    onChanged: (value) {
-                      getAddress(value);
-                    },
-                    controller: originController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Origen",
                       border: InputBorder.none,
                       suffixIcon: Icon(
@@ -99,6 +106,11 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.black,
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        _origin = value;
+                      });
+                    },
                   ),
                 ),
                 Container(
@@ -107,8 +119,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                   child: TextField(
-                    controller: destinationController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "Destino",
                       border: InputBorder.none,
                       suffixIcon: Icon(
@@ -117,12 +128,36 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     onChanged: (value) {
-                      getAddress(value);
+                      setState(() {
+                        _destination = value;
+                      });
                     },
                   ),
                 ),
+                ElevatedButton(
+                  child: const Text('Trazar camino'),
+                  onPressed: () {
+                    _showRoute();
+                  },
+                ),
               ],
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 150,
+            width: MediaQuery.of(context).size.width,
+            // ignore: unnecessary_null_comparison
+            child: _currentPosition == null
+                ? const Center(child: CircularProgressIndicator())
+                : GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(_currentPosition.latitude,
+                          _currentPosition.longitude),
+                      zoom: 17.0,
+                    ),
+                    myLocationEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {},
+                  ),
           ),
         ],
       ),
