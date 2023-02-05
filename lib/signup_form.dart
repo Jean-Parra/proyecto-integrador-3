@@ -30,7 +30,6 @@ class _SignupPageState extends State<SignupPage> {
   final Map<String, dynamic> _data = {};
   bool _isLoading = false;
   String? _errorMessage;
-
   @override
   void initState() {
     super.initState();
@@ -150,7 +149,7 @@ class _SignupPageState extends State<SignupPage> {
                 enabled: true,
                 controller: _usuario,
                 validator: (input) {
-                  if (input!.isEmpty) {
+                  if (input!.isEmpty && !_isCheckedusuario) {
                     return 'Por favor marca la casilla';
                   }
                   return null;
@@ -168,6 +167,7 @@ class _SignupPageState extends State<SignupPage> {
                     onChanged: (value) {
                       setState(() {
                         _isCheckedusuario = value!;
+                        _isCheckedconductor = false;
                       });
                     },
                   ),
@@ -179,7 +179,7 @@ class _SignupPageState extends State<SignupPage> {
                 enabled: true,
                 controller: _conductor,
                 validator: (input) {
-                  if (input!.isEmpty) {
+                  if (input!.isEmpty && !_isCheckedconductor) {
                     return 'Por favor marca la casilla';
                   }
                   return null;
@@ -197,6 +197,7 @@ class _SignupPageState extends State<SignupPage> {
                     onChanged: (value) {
                       setState(() {
                         _isCheckedconductor = value!;
+                        _isCheckedusuario = false;
                       });
                     },
                   ),

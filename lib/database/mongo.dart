@@ -43,4 +43,21 @@ class MongoDB {
       return false;
     }
   }
+
+  Future<bool> loginconductores(String email, String password) async {
+    final user = await db.collection("conductores").findOne({"correo": email});
+    if (user != null && user['contrasena'] == password) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
+
+//Guia para rechazar un conductor desde mongoDB
+  //var conductor = await db.collection("conductores")
+    //.findOne({"email": "email_del_conductor"});
+
+  //if (conductor != null) {
+    //conductor["estado"] = "rechazado";
+    //await db.collection("conductores").save(conductor);
