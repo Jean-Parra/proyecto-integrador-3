@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_field, unrelated_type_equality_checks, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_webservice/directions.dart';
 import 'package:proyecto_integrador_3/database/mongo.dart';
 import 'package:proyecto_integrador_3/home.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
@@ -145,66 +144,6 @@ class _SignupPageState extends State<SignupPage> {
                 onChanged: (value) => {_data['correo'] = value},
                 style: const TextStyle(color: Colors.black),
               ),
-              TextFormField(
-                enabled: true,
-                controller: _usuario,
-                validator: (input) {
-                  if (input!.isEmpty && !_isCheckedusuario) {
-                    return 'Por favor marca la casilla';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  icon: Icon(Icons.verified_user_outlined),
-                  labelText: "Usuario",
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  suffixIcon: Checkbox(
-                    value: _isCheckedusuario,
-                    onChanged: (value) {
-                      setState(() {
-                        _isCheckedusuario = value!;
-                        _isCheckedconductor = false;
-                      });
-                    },
-                  ),
-                ),
-                onChanged: (value) => {_data['usuario'] = value},
-                style: const TextStyle(color: Colors.black),
-              ),
-              TextFormField(
-                enabled: true,
-                controller: _conductor,
-                validator: (input) {
-                  if (input!.isEmpty && !_isCheckedconductor) {
-                    return 'Por favor marca la casilla';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  labelText: "Conductor",
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  suffixIcon: Checkbox(
-                    value: _isCheckedconductor,
-                    onChanged: (value) {
-                      setState(() {
-                        _isCheckedconductor = value!;
-                        _isCheckedusuario = false;
-                      });
-                    },
-                  ),
-                ),
-                onChanged: (value) => {_data['conductor'] = value},
-                style: const TextStyle(color: Colors.black),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -259,6 +198,44 @@ class _SignupPageState extends State<SignupPage> {
                 obscureText: true,
                 style: const TextStyle(color: Colors.black),
               ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _isCheckedusuario,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedusuario = value!;
+                            if (_isCheckedusuario == true) {
+                              _data["tipo"] = "usuario";
+                              _isCheckedconductor = false;
+                            }
+                          });
+                        },
+                      ),
+                      const Text("Usuario"),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _isCheckedconductor,
+                        onChanged: (value) {
+                          setState(() {
+                            _isCheckedconductor = value!;
+                            if (_isCheckedconductor == true) {
+                              _data["tipo"] = "conductor";
+                              _isCheckedusuario = false;
+                            }
+                          });
+                        },
+                      ),
+                      const Text("Conductor"),
+                    ],
+                  )
+                ],
+              ),
               const SizedBox(
                 height: 15,
               ),
@@ -295,11 +272,17 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future<void> _submit() async {
+    if (_isCheckedconductor == false && _isCheckedusuario == false) {
+      setState(() {
+        _errorMessage = "Debe seleccionar un tipo de usuario";
+      });
+      return;
+    }
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
       setState(() {
         _isLoading = true;
       });
+      _formKey.currentState!.save();
       try {
         await mongoDB.connect();
         await mongoDB.insert('usuarios', _data);
