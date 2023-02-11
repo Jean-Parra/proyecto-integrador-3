@@ -8,6 +8,7 @@ import 'package:location/location.dart' as location;
 import 'package:google_maps_webservice/directions.dart' hide Polyline;
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:polyline_do/polyline_do.dart' as polyline_do;
+import 'package:permission_handler/permission_handler.dart';
 
 const kGoogleApiKey = "AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA";
 
@@ -40,17 +41,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _getPermission() async {
-    _permissionGranted = (await _location.requestPermission()) as bool;
-    if (_permissionGranted == false) {
-      _permissionGranted = (await _location.requestPermission()) as bool;
+    final permissionResult = await _location.requestPermission();
+    _permissionGranted = permissionResult == PermissionStatus.granted;
+    if (!_permissionGranted) {
+      final permissionResult = await _location.requestPermission();
+      _permissionGranted = permissionResult == PermissionStatus.granted;
     }
   }
 
   Future<void> _getCurrentLocation() async {
     try {
-      _currentPosition = await geolocator.Geolocator.getCurrentPosition(
+      final posicion = await geolocator.Geolocator.getCurrentPosition(
           desiredAccuracy: geolocator.LocationAccuracy.high);
-      setState(() {});
+      setState(() {
+        _currentPosition = posicion;
+      });
     } catch (e) {
       print(e);
     }
