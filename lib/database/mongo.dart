@@ -35,29 +35,20 @@ class MongoDB {
     await db.close();
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<String> login(String email, String password) async {
     final user = await db.collection("usuarios").findOne({"correo": email});
     if (user != null && user['contrasena'] == password) {
-      return true;
+      if (user['tipo'] == "usuario") {
+        return "usuario";
+      } else if (user['tipo'] == "conductor") {
+        return "conductor";
+      } else if (user['tipo'] == "administrador") {
+        return "administrador";
+      } else {
+        return "NO";
+      }
     } else {
-      return false;
-    }
-  }
-
-  Future<bool> loginconductores(String email, String password) async {
-    final user = await db.collection("conductores").findOne({"correo": email});
-    if (user != null && user['contrasena'] == password) {
-      return true;
-    } else {
-      return false;
+      return "NO";
     }
   }
 }
-
-//Guia para rechazar un conductor desde mongoDB
-  //var conductor = await db.collection("conductores")
-    //.findOne({"email": "email_del_conductor"});
-
-  //if (conductor != null) {
-    //conductor["estado"] = "rechazado";
-    //await db.collection("conductores").save(conductor);

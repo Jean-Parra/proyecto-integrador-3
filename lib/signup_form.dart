@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/database/mongo.dart';
-import 'package:proyecto_integrador_3/home.dart';
+import 'package:proyecto_integrador_3/usuario.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
+
+import 'conductor.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -286,8 +288,13 @@ class _SignupPageState extends State<SignupPage> {
       try {
         await mongoDB.connect();
         await mongoDB.insert('usuarios', _data);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => (const HomePage())));
+        if (_isCheckedconductor) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => (const UsuarioPage())));
+        } else if (_isCheckedusuario) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => (const ConductorPage())));
+        }
       } catch (e) {
         setState(() {
           _isLoading = false;

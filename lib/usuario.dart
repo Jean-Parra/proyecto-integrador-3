@@ -12,15 +12,15 @@ import 'package:permission_handler/permission_handler.dart';
 
 const kGoogleApiKey = "AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA";
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class UsuarioPage extends StatefulWidget {
+  const UsuarioPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
+  _UsuarioPageState createState() => _UsuarioPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UsuarioPageState extends State<UsuarioPage> {
   late geolocator.Position _currentPosition;
   late GoogleMapController mapcontroller;
 
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
       final destinationLocation =
           Location(lat: destination[0].latitude, lng: destination[0].longitude);
 
-      final mode = TravelMode.driving;
+      const mode = TravelMode.driving;
 
       final result = await _directions.directionsWithLocation(
         originLocation,
