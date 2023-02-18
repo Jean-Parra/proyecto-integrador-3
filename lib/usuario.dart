@@ -10,10 +10,14 @@ import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:polyline_do/polyline_do.dart' as polyline_do;
 import 'package:permission_handler/permission_handler.dart';
 
+import 'custom_drawer.dart';
+import 'user.dart';
+
 const kGoogleApiKey = "AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA";
 
 class UsuarioPage extends StatefulWidget {
-  const UsuarioPage({super.key});
+  final User user;
+  const UsuarioPage({Key? key, required this.user}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -126,6 +130,10 @@ class _UsuarioPageState extends State<UsuarioPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Usuario'),
+      ),
+      drawer: CustomDrawer(profileName: "usuario", user: widget.user),
       resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
@@ -185,7 +193,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height - 150,
+            height: MediaQuery.of(context).size.height - 230,
             width: MediaQuery.of(context).size.width,
             // ignore: unnecessary_null_comparison
             child: _currentPosition == null

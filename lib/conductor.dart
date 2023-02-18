@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'custom_drawer.dart';
+import 'user.dart';
+
 class ConductorPage extends StatefulWidget {
-  const ConductorPage({super.key});
+  final User user;
+  const ConductorPage({Key? key, required this.user}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -17,6 +21,7 @@ class _ConductorPageState extends State<ConductorPage> {
         appBar: AppBar(
           title: const Text('Conductor'),
         ),
+        drawer: CustomDrawer(profileName: "conductor", user: widget.user),
         body: const Center(
           child: Text('Vista del conductor'),
         ),

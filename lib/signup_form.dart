@@ -8,7 +8,7 @@ import 'package:proyecto_integrador_3/login_form.dart';
 import 'conductor.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -288,12 +288,18 @@ class _SignupPageState extends State<SignupPage> {
       try {
         await mongoDB.connect();
         await mongoDB.insert('usuarios', _data);
+        var validacion =
+            await mongoDB.login(_data["correo"], _data["contrasena"]);
         if (_isCheckedconductor) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => (const UsuarioPage())));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (UsuarioPage(user: validacion!))));
         } else if (_isCheckedusuario) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => (const ConductorPage())));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (ConductorPage(user: validacion!))));
         }
       } catch (e) {
         setState(() {

@@ -1,5 +1,7 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
+import '../user.dart';
+
 class MongoDB {
   late Db db;
 
@@ -35,20 +37,18 @@ class MongoDB {
     await db.close();
   }
 
-  Future<String> login(String email, String password) async {
+  Future<User?> login(String email, String password) async {
     final user = await db.collection("usuarios").findOne({"correo": email});
     if (user != null && user['contrasena'] == password) {
-      if (user['tipo'] == "usuario") {
-        return "usuario";
-      } else if (user['tipo'] == "conductor") {
-        return "conductor";
-      } else if (user['tipo'] == "administrador") {
-        return "administrador";
-      } else {
-        return "NO";
-      }
+      return User(
+          name: user['nombre'],
+          lastname: user["apellido"],
+          phone: user["telefono"],
+          email: user['correo'],
+          password: user["contrasena"],
+          type: user['tipo']);
     } else {
-      return "NO";
+      return null;
     }
   }
 }

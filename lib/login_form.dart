@@ -10,7 +10,7 @@ import 'administrador.dart';
 import 'olvido.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -159,17 +159,22 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       try {
         await mongoDB.connect();
         var validacion = await mongoDB.login(_email, _password);
-        if (validacion == "usuario") {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => (const UsuarioPage())));
-        } else if (validacion == "conductor") {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => (const ConductorPage())));
-        } else if (validacion == "administrador") {
+        if (validacion?.type == "usuario") {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => (const AdministradorPage())));
+                  builder: (context) => (UsuarioPage(user: validacion!))));
+        } else if (validacion?.type == "conductor") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (ConductorPage(user: validacion!))));
+        } else if (validacion?.type == "administrador") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      (AdministradorPage(user: validacion!))));
         } else {
           setState(() {
             _isLoading = false;

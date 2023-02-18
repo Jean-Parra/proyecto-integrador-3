@@ -21,13 +21,14 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        title: 'Material App',
-        debugShowCheckedModeBanner: false,
-        home: LoginPage());
+      title: 'Material App',
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
   }
 }
