@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => (const OlvidoPage())));
+                        builder: (context) => const OlvidoPage()));
               },
             ),
           ],
