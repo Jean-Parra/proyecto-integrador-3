@@ -1,5 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart';
-
+import 'package:mongo_dart/mongo_dart.dart';
 import '../user.dart';
 
 class MongoDB {
@@ -19,7 +19,8 @@ class MongoDB {
     await db.collection(collection).insert(data);
   }
 
-  Future<List<Map<String, dynamic>>> find(String collection) async {
+  Future<List<Map<String, dynamic>>> find(
+      String collection, Map<String, String> map) async {
     var result = await db.collection(collection).find().toList();
     return result;
   }
@@ -47,6 +48,15 @@ class MongoDB {
           email: user['correo'],
           password: user["contrasena"],
           type: user['tipo']);
+    } else {
+      return null;
+    }
+  }
+
+  Future<String?> recuperarContrasena(String email) async {
+    final user = await db.collection("usuarios").find({"correo": email}).first;
+    if (user != null) {
+      return user['contrasena'];
     } else {
       return null;
     }
