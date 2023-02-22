@@ -7,8 +7,8 @@ class CustomDrawer extends StatelessWidget {
   final String profileName;
   final User user;
 
-  const CustomDrawer(
-      {super.key, required this.profileName, required this.user});
+  const CustomDrawer({Key? key, required this.profileName, required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

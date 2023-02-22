@@ -10,8 +10,8 @@ import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:polyline_do/polyline_do.dart' as polyline_do;
 import 'package:permission_handler/permission_handler.dart';
 
-import 'custom_drawer.dart';
-import 'user.dart';
+import 'package:proyecto_integrador_3/custom_drawer.dart';
+import 'package:proyecto_integrador_3/user.dart';
 
 const kGoogleApiKey = "AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA";
 

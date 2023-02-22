@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:proyecto_integrador_3/usuarios/historial.dart';
 
 class Profile {
   final String name;
   final List<DrawerItem> items;
-
   Profile({required this.name, required this.items});
 }
 
@@ -57,7 +58,9 @@ final profiles = [
       DrawerItem(
         icon: Icons.settings,
         title: "Historial",
-        onTap: () {},
+        onTap: () {
+          Get.to(() => const HistorialUsuarioPage());
+        },
       ),
       DrawerItem(
         icon: Icons.report,

@@ -1,7 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:proyecto_integrador_3/user.dart';
 
 import 'database/mongo.dart';
 
@@ -42,6 +43,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingresa tu correo electrónico';
                   }
+                  return null;
                 },
               ),
               const SizedBox(height: 32.0),
@@ -55,7 +57,8 @@ class _OlvidoPageState extends State<OlvidoPage> {
                         final smtpServer =
                             gmail('<smtp.gmail.com>', '<hqtavrwrbwiuiyxi>');
                         final message = Message()
-                          ..from = Address('<smtp.gmail.com>', 'Miguel Mendoza')
+                          ..from = const Address(
+                              '<smtp.gmail.com>', 'Miguel Mendoza')
                           ..recipients.add(_emailController.text)
                           ..subject = 'Recuperación de contraseña'
                           ..text =

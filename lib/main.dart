@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 
 void main() async {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const GetMaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
