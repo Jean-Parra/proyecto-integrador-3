@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:proyecto_integrador_3/user.dart';
 
 import 'database/mongo.dart';
@@ -40,21 +42,54 @@ class _OlvidoPageState extends State<OlvidoPage> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingresa tu correo electrónico';
                   }
-                  // TODO: validar que el correo existe en la base de datos
                 },
               ),
               const SizedBox(height: 32.0),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      // TODO: enviar correo de recuperación de contraseña
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                              'Se ha enviado un correo de recuperación de contraseña.'),
-                        ),
-                      );
+                      final user =
+                          await _mongoDB.getUserByEmail(_emailController.text);
+                      if (user != null) {
+                        final smtpServer =
+                            gmail('<smtp.gmail.com>', '<hqtavrwrbwiuiyxi>');
+                        final message = Message()
+                          ..from = Address('<smtp.gmail.com>', 'Miguel Mendoza')
+                          ..recipients.add(_emailController.text)
+                          ..subject = 'Recuperación de contraseña'
+                          ..text =
+                              'Hola, ${user.name}. Tu código de recuperación de contraseña es: ${user.recoveryCode}. Por favor, ingresa este código en la app para cambiar tu contraseña.'
+                          ..html =
+                              '<p>Hola, ${user.name}.</p><p>Tu código de recuperación de contraseña es: ${user.recoveryCode}. Por favor, ingresa este código en la app para cambiar tu contraseña.</p>';
+                        try {
+                          await send(message, smtpServer);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Se ha enviado un correo de recuperación de contraseña.',
+                              ),
+                            ),
+                          );
+                        } on MailerException catch (e) {
+                          print('Error al enviar correo: $e');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Ocurrió un error al enviar el correo de recuperación de contraseña. Por favor, inténtalo de nuevo más tarde.',
+                              ),
+                            ),
+                          );
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'No se encontró un usuario registrado con el correo electrónico proporcionado. Por favor, verifica tus datos e inténtalo de nuevo.',
+                            ),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: const Text('Recuperar contraseña'),

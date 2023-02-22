@@ -61,4 +61,19 @@ class MongoDB {
       return null;
     }
   }
+
+  Future<User?> getUserByEmail(String email) async {
+    final user = await db.collection("usuarios").findOne({"correo": email});
+    if (user != null) {
+      return User(
+          name: user['nombre'],
+          lastname: user["apellido"],
+          phone: user["telefono"],
+          email: user['correo'],
+          password: user["contrasena"],
+          type: user['tipo']);
+    } else {
+      return null;
+    }
+  }
 }

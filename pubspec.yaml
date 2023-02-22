@@ -48,6 +48,7 @@ dependencies:
   polyline_do: ^0.1.0
   flutter_typeahead: ^4.3.3
   permission_handler: ^10.2.0
+  mailer: ^6.0.0
 
 dev_dependencies:
   flutter_test:
