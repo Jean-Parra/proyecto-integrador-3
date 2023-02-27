@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart' hide Polyline;

@@ -13,6 +13,4 @@ class User {
       required this.email,
       required this.password,
       required this.type});
-
-  get recoveryCode => null;
 }

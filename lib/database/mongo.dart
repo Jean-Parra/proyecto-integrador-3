@@ -52,13 +52,13 @@ class MongoDB {
     }
   }
 
-  Future<String?> recuperarContrasena(String email) async {
-    final user = await db.collection("usuarios").find({"correo": email}).first;
-    if (user != null) {
-      return user['contrasena'];
-    } else {
-      return null;
-    }
+  Future<void> updatePassword(String email, String newPassword) async {
+    await db.collection("usuarios").update(
+      {"correo": email},
+      {
+        r"$set": {"contrasena": newPassword},
+      },
+    );
   }
 
   Future<User?> getUserByEmail(String email) async {
