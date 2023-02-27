@@ -58,13 +58,8 @@ class _OlvidoPageState extends State<OlvidoPage> {
                             '<sololosproscomoyo@gmail.com>',
                             '<hqtavrwrbwiuiyxi>');
                         final message = Message()
-<<<<<<< Updated upstream
                           ..from = const Address(
                               '<smtp.gmail.com>', 'Miguel Mendoza')
-=======
-                          ..from = Address(
-                              '<sololosproscomoyo@gmail.com>', 'Miguel Mendoza')
->>>>>>> Stashed changes
                           ..recipients.add(_emailController.text)
                           ..subject = 'Recuperación de contraseña'
                           ..text =

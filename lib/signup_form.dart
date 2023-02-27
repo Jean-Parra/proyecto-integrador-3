@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/database/mongo.dart';
-import 'package:proyecto_integrador_3/usuario.dart';
+
+import 'usuarios/usuario.dart';
+
 import 'package:proyecto_integrador_3/login_form.dart';
 
-import 'conductor.dart';
+import 'conductores/conductor.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
