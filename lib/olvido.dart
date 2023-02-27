@@ -68,8 +68,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                           await _mongoDB.getUserByEmail(_emailController.text);
                       if (user != null) {
                         final smtpServer = SmtpServer('smtp.office365.com',
-                            username: 'mateito8001@hotmail.com',
-                            password: 'yosoypro1234511');
+                            username: 'mateito8001@hotmail.com', password: '');
                         final randomCode = Random().nextInt(900000) +
                             100000; // Genera un código aleatorio de 6 dígitos
                         final message = Message()
