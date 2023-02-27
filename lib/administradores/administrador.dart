@@ -3,6 +3,8 @@ import 'package:proyecto_integrador_3/custom_drawer.dart';
 
 import 'package:proyecto_integrador_3/user.dart';
 
+import '../usuarios/ListaUsuariosPage.dart';
+
 class AdministradorPage extends StatefulWidget {
   final User user;
   const AdministradorPage({Key? key, required this.user}) : super(key: key);
@@ -24,6 +26,15 @@ class _AdministradorPageState extends State<AdministradorPage> {
         drawer: CustomDrawer(profileName: "administrador", user: widget.user),
         body: const Center(
           child: Text('Vista del Administrador'),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ListaUsuariosPage()),
+            );
+          },
+          child: Icon(Icons.people),
         ),
       ),
     );

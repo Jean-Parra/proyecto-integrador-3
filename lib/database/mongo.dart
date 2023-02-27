@@ -41,12 +41,13 @@ class MongoDB {
     final user = await db.collection("usuarios").findOne({"correo": email});
     if (user != null && user['contrasena'] == password) {
       return User(
-          name: user['nombre'],
-          lastname: user["apellido"],
-          phone: user["telefono"],
-          email: user['correo'],
-          password: user["contrasena"],
-          type: user['tipo']);
+        name: user['nombre'],
+        lastname: user["apellido"],
+        phone: user["telefono"],
+        email: user['correo'],
+        password: user["contrasena"],
+        type: user['tipo'],
+      );
     } else {
       return null;
     }
@@ -65,12 +66,13 @@ class MongoDB {
     final user = await db.collection("usuarios").findOne({"correo": email});
     if (user != null) {
       return User(
-          name: user['nombre'],
-          lastname: user["apellido"],
-          phone: user["telefono"],
-          email: user['correo'],
-          password: user["contrasena"],
-          type: user['tipo']);
+        name: user['nombre'],
+        lastname: user["apellido"],
+        phone: user["telefono"],
+        email: user['correo'],
+        password: user["contrasena"],
+        type: user['tipo'],
+      );
     } else {
       return null;
     }
