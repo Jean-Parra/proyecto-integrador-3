@@ -77,4 +77,18 @@ class MongoDB {
       return null;
     }
   }
+
+  Future<List<User>> getAllUsers() async {
+    final users = await db.collection("usuarios").find().toList();
+    return users
+        .map((user) => User(
+              name: user['nombre'],
+              lastname: user["apellido"],
+              phone: user["telefono"],
+              email: user['correo'],
+              password: user["contrasena"],
+              type: user['tipo'],
+            ))
+        .toList();
+  }
 }

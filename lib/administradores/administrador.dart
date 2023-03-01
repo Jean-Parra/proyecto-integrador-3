@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/custom_drawer.dart';
-
-import 'package:proyecto_integrador_3/user.dart';
-
-import '../usuarios/ListaUsuariosPage.dart';
+import '../database/mongo.dart'; // importa MongoDB
+import 'package:proyecto_integrador_3/user.dart'; // importa User
+import '../usuarios/UserListPage.dart';
 
 class AdministradorPage extends StatefulWidget {
   final User user;
@@ -15,6 +14,8 @@ class AdministradorPage extends StatefulWidget {
 }
 
 class _AdministradorPageState extends State<AdministradorPage> {
+  MongoDB mongodb = MongoDB();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,13 +26,16 @@ class _AdministradorPageState extends State<AdministradorPage> {
         ),
         drawer: CustomDrawer(profileName: "administrador", user: widget.user),
         body: const Center(
-          child: Text('Vista del Administrador'),
+          child: Text('Vista del Administrador2'),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
+            final users = await mongodb.getAllUsers();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ListaUsuariosPage()),
+              MaterialPageRoute(
+                builder: (context) => ListaUsuariosPage(users: users),
+              ),
             );
           },
           child: Icon(Icons.people),

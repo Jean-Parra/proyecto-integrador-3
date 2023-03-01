@@ -14,8 +14,4 @@ class User {
     required this.password,
     required this.type,
   });
-
-  static fromMap(Map<String, dynamic> e) {}
-
-  static map(Function(dynamic e) param0) {}
 }
