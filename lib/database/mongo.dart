@@ -29,8 +29,14 @@ class MongoDB {
     await db.collection(collection).update(selector, data);
   }
 
-  Future<void> delete(String collection, Map<String, dynamic> data) async {
-    await db.collection(collection).remove(data);
+  Future<bool> delete(String collection, Map<String, String> data) async {
+    try {
+      await db.collection(collection).deleteMany(data);
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 
   Future<void> close() async {

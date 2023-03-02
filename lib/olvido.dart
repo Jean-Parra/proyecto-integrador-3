@@ -69,7 +69,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                       if (user != null) {
                         final smtpServer = SmtpServer('smtp.office365.com',
                             username: 'mateito8001@hotmail.com',
-                            password: 'Lolmiamor1234511');
+                            password: 'Lolmiamor2211');
                         final randomCode = Random().nextInt(900000) +
                             100000; // Genera un código aleatorio de 6 dígitos
                         final message = Message()

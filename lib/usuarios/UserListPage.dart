@@ -12,6 +12,7 @@ class ListaUsuariosPage extends StatefulWidget {
 
 class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
   String _deleteReason = '';
+  final db = MongoDB();
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +62,19 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              final result = await MongoDB()
+                              final result = await db
                                   .delete('usuarios', {'correo': user.email});
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Usuario eliminado.')),
-                              );
-                              Navigator.pop(context);
+                              print('Su usuario es: $result');
+                              if (result) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('Usuario eliminado.')));
+                                Navigator.pop(context);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'Ocurrió un error al eliminar al usuario. Intente de nuevo.')));
+                              }
                             },
                             child: Text('Eliminar'),
                           ),
