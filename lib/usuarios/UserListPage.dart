@@ -28,7 +28,14 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(
               title: Text('${user.name} ${user.lastname}'),
-              subtitle: Text(user.email),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(user.email),
+                  const SizedBox(height: 4),
+                  Text('Tipo: ${user.type}'),
+                ],
+              ),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () async {
