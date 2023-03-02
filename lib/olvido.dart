@@ -132,6 +132,8 @@ class _OlvidoPageState extends State<OlvidoPage> {
                                         }
                                         return null;
                                       },
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
                                     ),
                                   ],
                                 ),
