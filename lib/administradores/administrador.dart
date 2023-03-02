@@ -24,9 +24,18 @@ class _AdministradorPageState extends State<AdministradorPage> {
         appBar: AppBar(
           title: const Text('Administrador'),
         ),
-        drawer: CustomDrawer(profileName: "administrador", user: widget.user),
-        body: const Center(
-          child: Text('Vista del Administrador2'),
+        drawer: CustomDrawer(
+          profileName: "administrador",
+          user: widget.user,
+        ),
+        body: Center(
+          child: Text(
+            'Vista del Administrador',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
