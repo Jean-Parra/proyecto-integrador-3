@@ -28,7 +28,7 @@ class _AdministradorPageState extends State<AdministradorPage> {
           profileName: "administrador",
           user: widget.user,
         ),
-        body: Center(
+        body: const Center(
           child: Text(
             'Vista del Administrador',
             style: TextStyle(
@@ -47,7 +47,7 @@ class _AdministradorPageState extends State<AdministradorPage> {
               ),
             );
           },
-          child: Icon(Icons.people),
+          child: const Icon(Icons.people),
         ),
       ),
     );

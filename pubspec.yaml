@@ -50,6 +50,7 @@ dependencies:
   permission_handler: ^10.2.0
   mailer: ^6.0.0
   get: ^4.6.5
+  flutter_polyline_points: ^1.0.0
 
 dev_dependencies:
   flutter_test:
