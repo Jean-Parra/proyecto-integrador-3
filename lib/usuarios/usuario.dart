@@ -49,9 +49,14 @@ class _UsuarioPageState extends State<UsuarioPage> {
     final permissionResult = await _location.requestPermission();
     _permissionGranted = permissionResult == PermissionStatus.granted;
     if (!_permissionGranted) {
-      final permissionResult = await _location.requestPermission();
-      _permissionGranted = permissionResult == PermissionStatus.granted;
+      final secondPermissionResult = await _location.requestPermission();
+      _permissionGranted = secondPermissionResult == PermissionStatus.granted;
     }
+  }
+
+  Future<void> _requestLocationPermission() async {
+    final permissionResult = await _location.requestPermission();
+    _permissionGranted = permissionResult == PermissionStatus.granted;
   }
 
   Future<void> _getCurrentLocation() async {
@@ -62,38 +67,22 @@ class _UsuarioPageState extends State<UsuarioPage> {
         _currentPosition = posicion;
       });
     } catch (e) {
-      print(e);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text("Error al obtener la ubicación"),
+          content: Text(
+              "No se pudo obtener la ubicación actual del usuario. Verifica que tu GPS esté activado."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
-
-/*  Future<void> _showRoute() async {
-    try {
-      final origin = await geocoding.locationFromAddress(_origin,
-          localeIdentifier: "es_ES");
-      final destination = await geocoding.locationFromAddress(_destination,
-          localeIdentifier: "es_ES");
-
-      final originLocation =
-          Location(lat: origin[0].latitude, lng: origin[0].longitude);
-      final destinationLocation =
-          Location(lat: destination[0].latitude, lng: destination[0].longitude);
-
-      final result = await _directions.directionsWithLocation(
-        originLocation,
-        destinationLocation,
-      );
-
-      final points = polyline_do.Polyline.Decode(
-        precision: 1,
-        encodedString: result.routes[0].overviewPolyline.points,
-      );
-      setState(() {
-        _polylines.add(points);
-      });
-    } catch (e) {
-      print(e);
-    }
-  } */
 
   Future<void> _showRoute() async {
     try {
@@ -123,8 +112,20 @@ class _UsuarioPageState extends State<UsuarioPage> {
         _polylines.add(points);
       });
     } catch (e) {
-      print(e);
-      print("RECIBIDO");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text("Error al trazar la ruta"),
+          content: const Text(
+              "No se pudo trazar la ruta. Verifica que la dirección de origen y destino sean válidas y que tengas una conexión a internet."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -216,3 +217,32 @@ class _UsuarioPageState extends State<UsuarioPage> {
     );
   }
 }
+
+/*  Future<void> _showRoute() async {
+    try {
+      final origin = await geocoding.locationFromAddress(_origin,
+          localeIdentifier: "es_ES");
+      final destination = await geocoding.locationFromAddress(_destination,
+          localeIdentifier: "es_ES");
+
+      final originLocation =
+          Location(lat: origin[0].latitude, lng: origin[0].longitude);
+      final destinationLocation =
+          Location(lat: destination[0].latitude, lng: destination[0].longitude);
+
+      final result = await _directions.directionsWithLocation(
+        originLocation,
+        destinationLocation,
+      );
+
+      final points = polyline_do.Polyline.Decode(
+        precision: 1,
+        encodedString: result.routes[0].overviewPolyline.points,
+      );
+      setState(() {
+        _polylines.add(points);
+      });
+    } catch (e) {
+      print(e);
+    }
+  } */
