@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:proyecto_integrador_3/login_form.dart';
 import 'package:proyecto_integrador_3/usuarios/historial.dart';
 
 class Profile {
@@ -40,6 +41,13 @@ final profiles = [
         title: "Lista de conductores",
         onTap: () {},
       ),
+      DrawerItem(
+        icon: Icons.report,
+        title: "Cerrar sesion",
+        onTap: () {
+          Get.to(() => const LoginPage());
+        },
+      ),
     ],
   ),
   Profile(
@@ -64,8 +72,10 @@ final profiles = [
       ),
       DrawerItem(
         icon: Icons.report,
-        title: "Reportes",
-        onTap: () {},
+        title: "Cerrar sesion",
+        onTap: () {
+          Get.to(() => const LoginPage());
+        },
       ),
     ],
   ),
