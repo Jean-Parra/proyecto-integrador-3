@@ -296,12 +296,12 @@ class _SignupPageState extends State<SignupPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => (UsuarioPage(user: validacion!))));
+                  builder: (context) => (ConductorPage(user: validacion!))));
         } else if (_isCheckedusuario) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => (ConductorPage(user: validacion!))));
+                  builder: (context) => (UsuarioPage(user: validacion!))));
         }
       } catch (e) {
         setState(() {

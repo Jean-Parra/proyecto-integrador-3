@@ -1,15 +1,11 @@
 // ignore_for_file: avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart' hide Polyline;
-import 'package:location/location.dart' as location;
 import 'package:google_maps_webservice/directions.dart' hide Polyline;
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:polyline_do/polyline_do.dart' as polyline_do;
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:proyecto_integrador_3/custom_drawer.dart';
 import 'package:proyecto_integrador_3/user.dart';
@@ -26,62 +22,47 @@ class UsuarioPage extends StatefulWidget {
 }
 
 class _UsuarioPageState extends State<UsuarioPage> {
-  late geolocator.Position _currentPosition;
+  geolocator.Position? _currentPosition;
   late GoogleMapController mapcontroller;
 
   late String _destination;
   final GoogleMapsDirections _directions =
       GoogleMapsDirections(apiKey: kGoogleApiKey);
-
-  final location.Location _location = location.Location();
   late String _origin;
-  late bool _permissionGranted = false;
   final Set<polyline_do.Polyline> _polylines = <polyline_do.Polyline>{};
 
   @override
   void initState() {
     super.initState();
-    _getPermission();
-    _getCurrentLocation();
-  }
-
-  Future<void> _getPermission() async {
-    final permissionResult = await _location.requestPermission();
-    _permissionGranted = permissionResult == PermissionStatus.granted;
-    if (!_permissionGranted) {
-      final secondPermissionResult = await _location.requestPermission();
-      _permissionGranted = secondPermissionResult == PermissionStatus.granted;
-    }
-  }
-
-  Future<void> _requestLocationPermission() async {
-    final permissionResult = await _location.requestPermission();
-    _permissionGranted = permissionResult == PermissionStatus.granted;
-  }
-
-  Future<void> _getCurrentLocation() async {
-    try {
-      final posicion = await geolocator.Geolocator.getCurrentPosition(
-          desiredAccuracy: geolocator.LocationAccuracy.high);
+    _getCurrentLocation().then((position) {
       setState(() {
-        _currentPosition = posicion;
+        _currentPosition = position;
       });
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text("Error al obtener la ubicación"),
-          content: Text(
-              "No se pudo obtener la ubicación actual del usuario. Verifica que tu GPS esté activado."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+    });
+  }
+
+  Future<geolocator.Position> _getCurrentLocation() async {
+    //Verificar si la ubicación del dispositivo está habilitada
+    bool bGpsHabilitado =
+        await geolocator.Geolocator.isLocationServiceEnabled();
+    if (!bGpsHabilitado) {
+      return Future.error('Por favor habilite el servicio de ubicación.');
     }
+    //Validar permiso para utilizar los servicios de localización
+    geolocator.LocationPermission bGpsPermiso =
+        await geolocator.Geolocator.checkPermission();
+    if (bGpsPermiso == geolocator.LocationPermission.denied) {
+      bGpsPermiso = await geolocator.Geolocator.requestPermission();
+      if (bGpsPermiso == geolocator.LocationPermission.denied) {
+        return Future.error('Se denegó el permiso para obtener la ubicación.');
+      }
+    }
+    if (bGpsPermiso == geolocator.LocationPermission.deniedForever) {
+      return Future.error(
+          'Se denegó el permiso para obtener la ubicación de forma permanente.');
+    }
+    //En este punto los permisos están habilitados y se puede consultar la ubicación
+    return await geolocator.Geolocator.getCurrentPosition();
   }
 
   Future<void> _showRoute() async {
@@ -202,8 +183,8 @@ class _UsuarioPageState extends State<UsuarioPage> {
                 ? const Center(child: CircularProgressIndicator())
                 : GoogleMap(
                     initialCameraPosition: CameraPosition(
-                      target: LatLng(_currentPosition.latitude,
-                          _currentPosition.longitude),
+                      target: LatLng(_currentPosition!.latitude,
+                          _currentPosition!.longitude),
                       zoom: 17.0,
                     ),
                     myLocationEnabled: true,
@@ -217,32 +198,3 @@ class _UsuarioPageState extends State<UsuarioPage> {
     );
   }
 }
-
-/*  Future<void> _showRoute() async {
-    try {
-      final origin = await geocoding.locationFromAddress(_origin,
-          localeIdentifier: "es_ES");
-      final destination = await geocoding.locationFromAddress(_destination,
-          localeIdentifier: "es_ES");
-
-      final originLocation =
-          Location(lat: origin[0].latitude, lng: origin[0].longitude);
-      final destinationLocation =
-          Location(lat: destination[0].latitude, lng: destination[0].longitude);
-
-      final result = await _directions.directionsWithLocation(
-        originLocation,
-        destinationLocation,
-      );
-
-      final points = polyline_do.Polyline.Decode(
-        precision: 1,
-        encodedString: result.routes[0].overviewPolyline.points,
-      );
-      setState(() {
-        _polylines.add(points);
-      });
-    } catch (e) {
-      print(e);
-    }
-  } */
