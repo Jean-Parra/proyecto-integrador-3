@@ -1,6 +1,8 @@
 FROM cirrusci/flutter AS build
 
-WORKDIR /app
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
 
 COPY . .
 

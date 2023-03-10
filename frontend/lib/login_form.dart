@@ -1,11 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api, unused_field, use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
-import 'conductores/conductor.dart';
-import 'usuarios/usuario.dart';
+import 'controllers/userController.dart';
 import 'package:proyecto_integrador_3/signup_form.dart';
-import 'package:proyecto_integrador_3/database/mongo.dart';
-import 'administradores/administrador.dart';
 import 'olvido.dart';
 
 class LoginPage extends StatefulWidget {
@@ -16,13 +13,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+  final LoginController _loginController = LoginController();
+
   final _formKey = GlobalKey<FormState>();
   late String _email, _password;
-  bool _isLoading = false;
-  String? _errorMessage;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  final MongoDB mongoDB = MongoDB();
 
   @override
   void initState() {
@@ -103,7 +99,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             const SizedBox(
               height: 20,
             ),
-            _isLoading
+            _loginController.isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _submit,
@@ -116,9 +112,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             const SizedBox(
               height: 20,
             ),
-            _errorMessage != null
+            _loginController.errorMessage != ""
                 ? Text(
-                    _errorMessage!,
+                    _loginController.errorMessage,
                     style: const TextStyle(color: Colors.red),
                   )
                 : Container(),
@@ -151,41 +147,22 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+
       setState(() {
-        _isLoading = true;
-        _errorMessage = null;
+        _loginController.isLoading = true;
+        _loginController.errorMessage = "";
       });
       try {
-        await mongoDB.connect();
-        var validacion = await mongoDB.login(_email, _password);
-        if (validacion?.type == "usuario") {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => (UsuarioPage(user: validacion!))));
-        } else if (validacion?.type == "conductor") {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => (ConductorPage(user: validacion!))));
-        } else if (validacion?.type == "administrador") {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      (AdministradorPage(user: validacion!))));
-        } else {
-          setState(() {
-            _isLoading = false;
-            _errorMessage = "Credenciales invalidas";
-          });
-        }
+        _loginController.signIn(_email, _password);
       } catch (e) {
         setState(() {
-          _isLoading = false;
-          _errorMessage = e.toString();
+          _loginController.isLoading = false;
+          _loginController.errorMessage = e.toString();
         });
       }
+      setState(() {
+        _loginController.isLoading = false;
+      });
     }
   }
 }

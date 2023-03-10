@@ -52,7 +52,7 @@ class MongoDB {
         phone: user["telefono"],
         email: user['correo'],
         password: user["contrasena"],
-        type: user['tipo'],
+        role: user['tipo'],
       );
     } else {
       return null;
@@ -77,7 +77,7 @@ class MongoDB {
         phone: user["telefono"],
         email: user['correo'],
         password: user["contrasena"],
-        type: user['tipo'],
+        role: user['role'],
       );
     } else {
       return null;
@@ -93,7 +93,7 @@ class MongoDB {
               phone: user["telefono"],
               email: user['correo'],
               password: user["contrasena"],
-              type: user['tipo'],
+              role: user['role'],
             ))
         .toList();
   }

@@ -39,11 +39,10 @@ class _AdministradorPageState extends State<AdministradorPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            final users = await mongodb.getAllUsers();
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ListaUsuariosPage(users: users),
+                builder: (context) => ListaUsuariosPage(),
               ),
             );
           },
