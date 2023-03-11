@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:get/get.dart';
+import '../login_form.dart';
 import '/conductores/conductor.dart';
 import '/user.dart';
 import '/usuarios/usuario.dart';
@@ -117,6 +118,56 @@ class ObtenerUsuarios {
       return decodedData.map((user) => User.fromJson(user)).toList();
     } else {
       throw Exception('Failed to load users');
+    }
+  }
+}
+
+class VerificarToken {
+  Future<void> checkLoginStatus() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString("token") == null) {
+      print("token vacio");
+      Get.to(() => const LoginPage());
+    } else {
+      final url = Uri.parse('http://172.19.16.1:3000/ID');
+      final headers = {
+        'x-access-token': sharedPreferences.getString("token") ?? '',
+        'Content-Type': 'application/json'
+      };
+      final response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        User user = User.fromJson(jsonDecode(response.body));
+        switch (user.role) {
+          case 'administrador':
+            print("administrador");
+            Get.to(() => AdministradorPage(user: user));
+            break;
+          case 'usuario':
+            print("usuario");
+            Get.to(() => UsuarioPage(user: user));
+            break;
+          case 'conductor':
+            print("conductor");
+            Get.to(() => ConductorPage(user: user));
+            break;
+          default:
+            print('Rol de usuario desconocido: ${user.role}');
+        }
+      } else {
+        print(response.body);
+      }
+    }
+  }
+}
+
+class EliminarUsuario {
+  Future<void> eliminarUsuario(String email) async {
+    final uri = Uri.parse('http://172.19.16.1:3000/usuarios?email=$email');
+    final response = await http.delete(uri);
+    if (response.statusCode == 200) {
+      print('Usuario eliminado.');
+    } else {
+      print('Error al eliminar usuario: ${response.statusCode}');
     }
   }
 }

@@ -1,9 +1,9 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, library_private_types_in_public_api, avoid_print
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:proyecto_integrador_3/controllers/userController.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 
 void main() async {
@@ -21,15 +21,28 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final VerificarToken _token = VerificarToken();
+  @override
+  void initState() {
+    super.initState();
+    _token.checkLoginStatus();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      title: 'Material App',
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+    return GetMaterialApp(
+      initialRoute: "/",
+      getPages: [
+        GetPage(name: "/", page: () => const LoginPage()),
+      ],
     );
   }
 }

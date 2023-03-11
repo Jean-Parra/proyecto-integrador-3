@@ -1,6 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, file_names
+
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/controllers/userController.dart';
-import 'package:proyecto_integrador_3/database/mongo.dart';
 import 'package:proyecto_integrador_3/user.dart';
 
 class ListaUsuariosPage extends StatefulWidget {
@@ -11,8 +12,8 @@ class ListaUsuariosPage extends StatefulWidget {
 }
 
 class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
-  String _deleteReason = '';
   final ObtenerUsuarios _obtenerUsuarios = ObtenerUsuarios();
+  final EliminarUsuario _eliminarUsuario = EliminarUsuario();
 
   Future<List<User>>? _futureUsers;
 
@@ -51,9 +52,16 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
                       ],
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        // Agrega aquí el código para eliminar un usuario
+                      icon: const Icon(Icons.delete),
+                      onPressed: () async {
+                        await _eliminarUsuario.eliminarUsuario(user.email);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Usuario eliminado.')));
+                        setState(() {
+                          _futureUsers = _obtenerUsuarios.getUsers();
+                        });
                       },
                     ),
                   ),

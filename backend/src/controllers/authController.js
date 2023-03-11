@@ -48,7 +48,7 @@ router.get('/logout', function(req, res) {
 });
 
 router.get('/ID', verifyToken, (req, res) => {
-    res.status(200).send({ message: 'Acceso permitido', userId: req.userId });
+    res.status(200).send(req.user);
 });
 
 router.get('/users', async(req, res) => {
@@ -61,6 +61,18 @@ router.get('/users', async(req, res) => {
     }
 });
 
+router.delete('/usuarios', (req, res) => {
+    const email = req.query.email;
+    User.findOneAndDelete({ email: email }, (err, result) => {
+        if (err) {
+            res.sendStatus(500);
+        } else if (!result) {
+            res.sendStatus(404);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+});
 
 
 module.exports = router;

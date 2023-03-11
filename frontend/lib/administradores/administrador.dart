@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/custom_drawer.dart';
 import '../database/mongo.dart'; // importa MongoDB
 import 'package:proyecto_integrador_3/user.dart'; // importa User
-import '../usuarios/UserListPage.dart';
+import 'userList.dart';
 
 class AdministradorPage extends StatefulWidget {
   final User user;
@@ -42,7 +42,7 @@ class _AdministradorPageState extends State<AdministradorPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ListaUsuariosPage(),
+                builder: (context) => const ListaUsuariosPage(),
               ),
             );
           },
