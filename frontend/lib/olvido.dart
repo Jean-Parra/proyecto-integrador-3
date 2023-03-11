@@ -1,12 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api, avoid_print
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-
-import 'database/mongo.dart';
+import 'package:proyecto_integrador_3/controllers/userController.dart';
 
 class OlvidoPage extends StatefulWidget {
   const OlvidoPage({Key? key}) : super(key: key);
@@ -16,9 +14,11 @@ class OlvidoPage extends StatefulWidget {
 }
 
 class _OlvidoPageState extends State<OlvidoPage> {
+  final ObtenerUsuario _obtenerUsuario = ObtenerUsuario();
+  final CambiarContrasena _cambiarContrasena = CambiarContrasena();
+
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _mongoDB = MongoDB();
   String _recoveryCode = '';
 
   @override
@@ -64,8 +64,8 @@ class _OlvidoPageState extends State<OlvidoPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      final user =
-                          await _mongoDB.getUserByEmail(_emailController.text);
+                      final user = await _obtenerUsuario
+                          .getUserByEmail(_emailController.text);
                       if (user != null) {
                         final smtpServer = SmtpServer('smtp.office365.com',
                             username: 'pi3_2023@hotmail.com',
@@ -78,9 +78,9 @@ class _OlvidoPageState extends State<OlvidoPage> {
                           ..recipients.add(_emailController.text)
                           ..subject = 'Recuperación de contraseña'
                           ..text =
-                              'Hola, ${user.name}. Tu código de recuperación de contraseña es: $randomCode. Por favor, ingresa este código en la app para cambiar tu contraseña.'
+                              'Hola, ${user['name']}. Tu código de recuperación de contraseña es: $randomCode. Por favor, ingresa este código en la app para cambiar tu contraseña.'
                           ..html =
-                              '<p>Hola, ${user.name}.</p><p>Tu código de recuperación de contraseña es: $randomCode. Por favor, ingresa este código en la app para cambiar tu contraseña.</p>';
+                              '<p>Hola, ${user['name']}.</p><p>Tu código de recuperación de contraseña es: $randomCode. Por favor, ingresa este código en la app para cambiar tu contraseña.</p>';
                         try {
                           await send(message, smtpServer);
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -149,17 +149,17 @@ class _OlvidoPageState extends State<OlvidoPage> {
                                       if (codeController.text.isNotEmpty &&
                                           passwordController.text.isNotEmpty &&
                                           passwordController.text.length >= 6) {
-                                        final user =
-                                            await _mongoDB.getUserByEmail(
+                                        final user = await _obtenerUsuario
+                                            .getUserByEmail(
                                                 _emailController.text);
                                         final code =
                                             int.tryParse(codeController.text) ??
                                                 0;
                                         if (user != null &&
                                             code == randomCode) {
-                                          await _mongoDB.updatePassword(
-                                              user.email,
-                                              passwordController.text);
+                                          await _cambiarContrasena
+                                              .updatePassword(user['email'],
+                                                  passwordController.text);
                                           Navigator.of(context).pop();
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(

@@ -162,12 +162,42 @@ class VerificarToken {
 
 class EliminarUsuario {
   Future<void> eliminarUsuario(String email) async {
-    final uri = Uri.parse('http://172.19.16.1:3000/usuarios?email=$email');
+    final uri = Uri.parse('http://172.19.16.1:3000/users/$email');
     final response = await http.delete(uri);
     if (response.statusCode == 200) {
       print('Usuario eliminado.');
     } else {
       print('Error al eliminar usuario: ${response.statusCode}');
+    }
+  }
+}
+
+class ObtenerUsuario {
+  Future<Map<String, dynamic>> getUserByEmail(String email) async {
+    final response =
+        await http.get(Uri.parse('http://172.19.16.1:3000/users/$email'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Error al obtener el usuario: ${response.reasonPhrase}');
+    }
+  }
+}
+
+class CambiarContrasena {
+  Future<void> updatePassword(String email, String newPassword) async {
+    final url = Uri.parse('http://172.19.16.1:3000/update-password');
+    final headers = {'Content-Type': 'application/json'};
+    final body = json.encode({'email': email, 'newPassword': newPassword});
+
+    final response = await http.put(url, headers: headers, body: body);
+    final responseData = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      print(responseData['message']);
+    } else {
+      throw Exception(responseData['message']);
     }
   }
 }

@@ -61,7 +61,7 @@ router.get('/users', async(req, res) => {
     }
 });
 
-router.delete('/usuarios', (req, res) => {
+router.delete('/users/:email', (req, res) => {
     const email = req.query.email;
     User.findOneAndDelete({ email: email }, (err, result) => {
         if (err) {
@@ -72,6 +72,36 @@ router.delete('/usuarios', (req, res) => {
             res.sendStatus(200);
         }
     });
+});
+
+router.get('/users/:email', async(req, res) => {
+    const email = req.params.email;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error al obtener el usuario' });
+    }
+});
+
+router.put('/update-password', async(req, res) => {
+    const { email, newPassword } = req.body;
+    try {
+        const user = await User.findOneAndUpdate({ email: email }, { password: newPassword }, { new: true });
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        return res.status(200).json({ message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al actualizar la contraseña' });
+    }
 });
 
 
