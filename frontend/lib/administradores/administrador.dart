@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/custom_drawer.dart';
-import '../database/mongo.dart'; // importa MongoDB
 import 'package:proyecto_integrador_3/user.dart'; // importa User
 import 'userList.dart';
 
@@ -14,8 +13,6 @@ class AdministradorPage extends StatefulWidget {
 }
 
 class _AdministradorPageState extends State<AdministradorPage> {
-  MongoDB mongodb = MongoDB();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
