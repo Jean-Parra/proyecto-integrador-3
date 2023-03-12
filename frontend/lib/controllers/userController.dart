@@ -129,7 +129,7 @@ class VerificarToken {
       print("token vacio");
       Get.to(() => const LoginPage());
     } else {
-      final url = Uri.parse('http://172.19.16.1:3000/ID');
+      final url = Uri.parse('http://172.19.16.1:3000/user');
       final headers = {
         'x-access-token': sharedPreferences.getString("token") ?? '',
         'Content-Type': 'application/json'
@@ -187,7 +187,7 @@ class ObtenerUsuario {
 
 class CambiarContrasena {
   Future<void> updatePassword(String email, String newPassword) async {
-    final url = Uri.parse('http://172.19.16.1:3000/update-password');
+    final url = Uri.parse('http://172.19.16.1:3000/users/:password');
     final headers = {'Content-Type': 'application/json'};
     final body = json.encode({'email': email, 'newPassword': newPassword});
 

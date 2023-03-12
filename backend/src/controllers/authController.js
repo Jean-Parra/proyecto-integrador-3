@@ -47,7 +47,7 @@ router.get('/logout', function(req, res) {
     res.status(200).send({ auth: false, token: null });
 });
 
-router.get('/ID', verifyToken, (req, res) => {
+router.get('/user', verifyToken, (req, res) => {
     res.status(200).send(req.user);
 });
 
@@ -91,7 +91,7 @@ router.get('/users/:email', async(req, res) => {
     }
 });
 
-router.put('/update-password', async(req, res) => {
+router.put('/users/:password', async(req, res) => {
     const { email, newPassword } = req.body;
     try {
         const user = await User.findOneAndUpdate({ email: email }, { password: newPassword }, { new: true });
