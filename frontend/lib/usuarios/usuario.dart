@@ -29,6 +29,9 @@ class _UsuarioPageState extends State<UsuarioPage> {
   TextEditingController originController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
   GoogleMapController? mapController;
+  bool _modalOpen = false;
+  double? _distance;
+  double? _price;
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -99,6 +102,15 @@ class _UsuarioPageState extends State<UsuarioPage> {
                   .toList(),
             ),
           );
+          // Calculo de precio
+          double distance =
+              data['routes'][0]['legs'][0]['distance']['value'] / 1000.0;
+          double price =
+              distance <= 2.0 ? 5000.0 : 5000.0 + (distance - 2.0) * 500.0;
+          print('El precio es de \$${price.toStringAsFixed(2)}');
+          _distance = distance;
+          _price = price;
+          _modalOpen = true;
         });
       } else {
         print("chao");
@@ -106,6 +118,12 @@ class _UsuarioPageState extends State<UsuarioPage> {
     } else {
       print("el estado no es 200");
     }
+  }
+
+  void _closeModal() {
+    setState(() {
+      _modalOpen = false;
+    });
   }
 
   @override
@@ -200,8 +218,30 @@ class _UsuarioPageState extends State<UsuarioPage> {
                 ),
                 ElevatedButton(
                   child: const Text('Trazar camino'),
-                  onPressed: () {
+                  onPressed: () async {
                     getRoutePoints();
+                    await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                                'La distancia es: ${_distance} KM\nEl precio es: ${_price} COP'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancelar'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Aceptar'),
+                              ),
+                            ],
+                          );
+                        });
                   },
                 ),
               ],
