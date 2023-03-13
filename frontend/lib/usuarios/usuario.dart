@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_print, unused_local_variable
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/directions.dart' hide Polyline;
-import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:polyline_do/polyline_do.dart' as polyline_do;
 
+import 'package:http/http.dart' as http;
 import 'package:proyecto_integrador_3/custom_drawer.dart';
 import 'package:proyecto_integrador_3/user.dart';
 
@@ -23,13 +24,89 @@ class UsuarioPage extends StatefulWidget {
 
 class _UsuarioPageState extends State<UsuarioPage> {
   geolocator.Position? _currentPosition;
-  late GoogleMapController mapcontroller;
+  final Set<Marker> _markers = {};
+  final Set<Polyline> _polylines = {};
+  TextEditingController originController = TextEditingController();
+  TextEditingController destinationController = TextEditingController();
+  GoogleMapController? mapController;
 
-  late String _destination;
-  final GoogleMapsDirections _directions =
-      GoogleMapsDirections(apiKey: kGoogleApiKey);
-  late String _origin;
-  final Set<Polyline> _polylines = <Polyline>{};
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+      _markers.add(
+        Marker(
+          markerId: const MarkerId('id-1'),
+          position:
+              LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+          infoWindow: const InfoWindow(
+            title: 'Center',
+            snippet: 'The center of the map',
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> getRoutePoints() async {
+    String origin = Uri.encodeComponent(originController.text);
+    print(origin);
+    String destination = Uri.encodeComponent(destinationController.text);
+    print(destination);
+    String url =
+        "https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$kGoogleApiKey";
+    print(url);
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print(response.body);
+      print(data['status']);
+      if (data['status'] == 'OK') {
+        print("hola");
+        var startLocation = data['routes'][0]['legs'][0]['start_location'];
+        var endLocation = data['routes'][0]['legs'][0]['end_location'];
+        var points = data['routes'][0]['overview_polyline']['points'];
+        var routePoints = PolylinePoints().decodePolyline(points);
+        setState(() {
+          _markers.clear();
+          _polylines.clear();
+          _markers.add(
+            Marker(
+              markerId: const MarkerId('id-2'),
+              position: LatLng(startLocation['lat'], startLocation['lng']),
+              infoWindow: InfoWindow(
+                title: 'Origin',
+                snippet: origin,
+              ),
+            ),
+          );
+          _markers.add(
+            Marker(
+              markerId: const MarkerId('id-3'),
+              position: LatLng(endLocation['lat'], endLocation['lng']),
+              infoWindow: InfoWindow(
+                title: 'Destination',
+                snippet: destination,
+              ),
+            ),
+          );
+          _polylines.add(
+            Polyline(
+              polylineId: const PolylineId('id-4'),
+              color: Colors.blue,
+              width: 5,
+              points: routePoints
+                  .map((e) => LatLng(e.latitude, e.longitude))
+                  .toList(),
+            ),
+          );
+        });
+      } else {
+        print("chao");
+      }
+    } else {
+      print("el estado no es 200");
+    }
+  }
 
   @override
   void initState() {
@@ -65,52 +142,6 @@ class _UsuarioPageState extends State<UsuarioPage> {
     return await geolocator.Geolocator.getCurrentPosition();
   }
 
-  Future<void> _showRoute() async {
-    try {
-      final origin = await geocoding.locationFromAddress(_origin,
-          localeIdentifier: "es_ES");
-      final destination = await geocoding.locationFromAddress(_destination,
-          localeIdentifier: "es_ES");
-
-      final originLocation =
-          Location(lat: origin[0].latitude, lng: origin[0].longitude);
-      print("ORIGEN ACA $originLocation");
-      final destinationLocation =
-          Location(lat: destination[0].latitude, lng: destination[0].longitude);
-      print(destinationLocation);
-
-      final result = await _directions.directionsWithLocation(
-        originLocation,
-        destinationLocation,
-        travelMode: TravelMode.driving,
-      );
-
-      final points = polyline_do.Polyline.Decode(
-        precision: 5,
-        encodedString: result.routes[0].overviewPolyline.points,
-      );
-      print(points);
-      setState(() {
-        _polylines.add(points as Polyline);
-      });
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text("Error al trazar la ruta"),
-          content: const Text(
-              "No se pudo trazar la ruta. Verifica que la dirección de origen y destino sean válidas y que tengas una conexión a internet."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +172,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        _origin = value;
+                        originController.text = value;
                       });
                     },
                   ),
@@ -162,7 +193,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        _destination = value;
+                        destinationController.text = value;
                       });
                     },
                   ),
@@ -170,7 +201,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
                 ElevatedButton(
                   child: const Text('Trazar camino'),
                   onPressed: () {
-                    _showRoute();
+                    getRoutePoints();
                   },
                 ),
               ],
@@ -188,12 +219,12 @@ class _UsuarioPageState extends State<UsuarioPage> {
                           _currentPosition!.longitude),
                       zoom: 17.0,
                     ),
-                    myLocationEnabled: true,
-                    onMapCreated: (GoogleMapController controller) {
-                      mapcontroller = controller;
-                    },
+                    markers: _markers,
                     polylines: _polylines,
-                  ),
+                    zoomControlsEnabled: true,
+                    myLocationEnabled: true,
+                    rotateGesturesEnabled: true,
+                    onMapCreated: _onMapCreated),
           ),
         ],
       ),

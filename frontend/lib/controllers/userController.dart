@@ -19,8 +19,8 @@ class LoginController {
     Map data = {'email': email, 'password': pass};
     // ignore: avoid_init_to_null
     var jsonResponse = null;
-    var response = await http.post(Uri.parse("http://172.19.16.1:3000/signin"),
-        body: data);
+    var response = await http
+        .post(Uri.parse("http://192.168.246.145:3000/signin"), body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print('Response status: ${response.statusCode}');
@@ -63,7 +63,7 @@ class RegisterController {
 
   Future<void> register(String name, String lastname, String phone,
       String email, String password, String role) async {
-    final uri = Uri.parse("http://172.19.16.1:3000/signup");
+    final uri = Uri.parse("http://192.168.246.145:3000/signup");
     final response = await http.post(uri, body: {
       'name': name,
       'lastname': lastname,
@@ -110,7 +110,7 @@ class RegisterController {
 
 class ObtenerUsuarios {
   Future<List<User>> getUsers() async {
-    final url = Uri.parse('http://172.19.16.1:3000/users');
+    final url = Uri.parse('http://192.168.246.145:3000/users');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -129,7 +129,7 @@ class VerificarToken {
       print("token vacio");
       Get.to(() => const LoginPage());
     } else {
-      final url = Uri.parse('http://172.19.16.1:3000/user');
+      final url = Uri.parse('http://192.168.246.145:3000/user');
       final headers = {
         'x-access-token': sharedPreferences.getString("token") ?? '',
         'Content-Type': 'application/json'
@@ -162,7 +162,7 @@ class VerificarToken {
 
 class EliminarUsuario {
   Future<void> eliminarUsuario(String email) async {
-    final uri = Uri.parse('http://172.19.16.1:3000/users/$email');
+    final uri = Uri.parse('http://192.168.246.145:3000/users/$email');
     final response = await http.delete(uri);
     if (response.statusCode == 200) {
       print('Usuario eliminado.');
@@ -175,7 +175,7 @@ class EliminarUsuario {
 class ObtenerUsuario {
   Future<Map<String, dynamic>> getUserByEmail(String email) async {
     final response =
-        await http.get(Uri.parse('http://172.19.16.1:3000/users/$email'));
+        await http.get(Uri.parse('http://192.168.246.145:3000/users/$email'));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -187,7 +187,7 @@ class ObtenerUsuario {
 
 class CambiarContrasena {
   Future<void> updatePassword(String email, String newPassword) async {
-    final url = Uri.parse('http://172.19.16.1:3000/users/:password');
+    final url = Uri.parse('http://192.168.246.145:3000/users/:password');
     final headers = {'Content-Type': 'application/json'};
     final body = json.encode({'email': email, 'newPassword': newPassword});
 
