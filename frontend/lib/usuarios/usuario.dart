@@ -29,7 +29,6 @@ class _UsuarioPageState extends State<UsuarioPage> {
   TextEditingController originController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
   GoogleMapController? mapController;
-  bool _modalOpen = false;
   double? _distance;
   double? _price;
 
@@ -110,7 +109,6 @@ class _UsuarioPageState extends State<UsuarioPage> {
           print('El precio es de \$${price.toStringAsFixed(2)}');
           _distance = distance;
           _price = price;
-          _modalOpen = true;
         });
       } else {
         print("chao");
@@ -118,12 +116,6 @@ class _UsuarioPageState extends State<UsuarioPage> {
     } else {
       print("el estado no es 200");
     }
-  }
-
-  void _closeModal() {
-    setState(() {
-      _modalOpen = false;
-    });
   }
 
   @override
@@ -223,21 +215,62 @@ class _UsuarioPageState extends State<UsuarioPage> {
                     await showDialog(
                         context: context,
                         builder: (context) {
+                          String selectedOption = 'efectivo';
                           return AlertDialog(
                             title: Text(
-                                'La distancia es: ${_distance} KM\nEl precio es: ${_price} COP'),
+                                'La distancia es: $_distance KM\nEl precio es: $_price COP'),
+                            content: StatefulBuilder(builder:
+                                (BuildContext context, StateSetter setState) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RadioListTile(
+                                    title: const Row(
+                                      children: [
+                                        Icon(Icons.money),
+                                        SizedBox(width: 10),
+                                        Text('Efectivo'),
+                                      ],
+                                    ),
+                                    value: 'efectivo',
+                                    groupValue: selectedOption,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedOption = value!;
+                                      });
+                                    },
+                                  ),
+                                  RadioListTile(
+                                    title: const Row(
+                                      children: [
+                                        Icon(Icons.credit_card),
+                                        SizedBox(width: 10),
+                                        Text('Tarjeta'),
+                                      ],
+                                    ),
+                                    value: 'tarjeta',
+                                    groupValue: selectedOption,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedOption = value!;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              );
+                            }),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: Text('Cancelar'),
+                                child: const Text('Cancelar'),
                               ),
                               TextButton(
                                 onPressed: () async {
                                   Navigator.pop(context);
                                 },
-                                child: Text('Aceptar'),
+                                child: const Text('Aceptar'),
                               ),
                             ],
                           );
