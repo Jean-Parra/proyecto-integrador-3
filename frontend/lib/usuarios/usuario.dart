@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, unused_local_variable
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -30,7 +31,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
   TextEditingController destinationController = TextEditingController();
   GoogleMapController? mapController;
   double? _distance;
-  double? _price;
+  int? _price;
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -101,14 +102,16 @@ class _UsuarioPageState extends State<UsuarioPage> {
                   .toList(),
             ),
           );
-          // Calculo de precio
           double distance =
               data['routes'][0]['legs'][0]['distance']['value'] / 1000.0;
-          double price =
-              distance <= 2.0 ? 5000.0 : 5000.0 + (distance - 2.0) * 500.0;
-          print('El precio es de \$${price.toStringAsFixed(2)}');
+          int basePrice = 5000;
+          double additionalPrice = max(0, distance - 2.0) * 500.0;
+          double price = basePrice + additionalPrice;
+          int roundedPrice = (price / 50.0).ceil() * 50;
+
+          print('El precio es de \$${roundedPrice.toString()}');
           _distance = distance;
-          _price = price;
+          _price = roundedPrice.toInt();
         });
       } else {
         print("chao");
