@@ -59,8 +59,8 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text(
-                                  '¿Está seguro de que desea eliminar este usuario?'),
+                              title: Text(
+                                  '¿Está seguro de que desea eliminar el usuario: ${user.email}?'),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
