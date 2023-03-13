@@ -14,7 +14,7 @@ class ListaUsuariosPage extends StatefulWidget {
 class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
   final ObtenerUsuarios _obtenerUsuarios = ObtenerUsuarios();
   final EliminarUsuario _eliminarUsuario = EliminarUsuario();
-
+  String _deleteReason = '';
   Future<List<User>>? _futureUsers;
 
   @override
@@ -54,14 +54,57 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () async {
-                        await _eliminarUsuario.eliminarUsuario(user.email);
+                        _deleteReason = '';
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  '¿Está seguro de que desea eliminar este usuario?'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                      hintText:
+                                          'Ingrese el motivo de la eliminación',
+                                      labelText: 'Motivo',
+                                    ),
+                                    onChanged: (value) {
+                                      _deleteReason = value;
+                                    },
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    await _eliminarUsuario.eliminarUsuario(
+                                        user.email, _deleteReason);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Usuario eliminado.')));
-                        setState(() {
-                          _futureUsers = _obtenerUsuarios.getUsers();
-                        });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text('Usuario eliminado.')));
+                                    Navigator.pop(context);
+
+                                    setState(() {
+                                      _futureUsers =
+                                          _obtenerUsuarios.getUsers();
+                                    });
+                                  },
+                                  child: const Text('Eliminar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                   ),

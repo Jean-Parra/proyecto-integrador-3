@@ -2,6 +2,7 @@ const { Router } = require('express')
 const router = Router();
 
 const User = require('../models/userModal');
+const DeletedUser = require('../models/deleteUserModal');
 const verifyToken = require('./verifyToken');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
@@ -62,14 +63,28 @@ router.get('/users', async(req, res) => {
 });
 
 router.delete('/users/:email', (req, res) => {
-    const email = req.query.email;
+    const email = req.params.email;
+    const deleteReason = req.body.deleteReason;
     User.findOneAndDelete({ email: email }, (err, result) => {
         if (err) {
             res.sendStatus(500);
         } else if (!result) {
             res.sendStatus(404);
         } else {
-            res.sendStatus(200);
+            const deletedUser = new DeletedUser({
+                name: result.name,
+                lastname: result.lastname,
+                email: result.email,
+                role: result.role,
+                deleteReason: deleteReason
+            });
+            deletedUser.save((err) => {
+                if (err) {
+                    res.sendStatus(500);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
         }
     });
 });
