@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'package:proyecto_integrador_3/usuarios/historial.dart';
 
+import 'administradores/listaconductor.dart';
+import 'administradores/listausuario.dart';
+
 class Profile {
   final String name;
   final List<DrawerItem> items;
@@ -34,12 +37,16 @@ final profiles = [
       DrawerItem(
         icon: Icons.people,
         title: "Lista de usuarios",
-        onTap: () {},
+        onTap: () {
+          Get.to(() => UserListScreen());
+        },
       ),
       DrawerItem(
         icon: Icons.people,
         title: "Lista de conductores",
-        onTap: () {},
+        onTap: () {
+          Get.to(() => ListConductoresScreen());
+        },
       ),
       DrawerItem(
         icon: Icons.report,

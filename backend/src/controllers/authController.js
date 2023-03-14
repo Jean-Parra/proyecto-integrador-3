@@ -119,5 +119,29 @@ router.put('/users/:password', async(req, res) => {
     }
 });
 
+router.get('/usuarios', async (req, res) => {
+    try {
+    const users = await User.find({ role: 'usuario' });
+    res.status(200).json(users);
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener los usuarios' });
+    }
+});
+
+router.get('/conductores', async (req, res) => {
+    try {
+    const users = await User.find({ role: 'conductor' });
+    res.status(200).json(users);
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener los conductores' });
+    }
+});
+
+
+
+
+
 
 module.exports = router;

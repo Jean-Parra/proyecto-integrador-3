@@ -12,7 +12,7 @@ class ListaUsuariosPage extends StatefulWidget {
 }
 
 class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
-  final ObtenerUsuarios _obtenerUsuarios = ObtenerUsuarios();
+  final ObtenerPersonas _obtenerPersonas = ObtenerPersonas();
   final EliminarUsuario _eliminarUsuario = EliminarUsuario();
   String _deleteReason = '';
   Future<List<User>>? _futureUsers;
@@ -20,14 +20,14 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
   @override
   void initState() {
     super.initState();
-    _futureUsers = _obtenerUsuarios.getUsers();
+    _futureUsers = _obtenerPersonas.getUsers();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Usuarios'),
+        title: const Text('Lista de Personas'),
       ),
       body: FutureBuilder<List<User>>(
         future: _futureUsers,
@@ -96,7 +96,7 @@ class _ListaUsuariosPageState extends State<ListaUsuariosPage> {
 
                                     setState(() {
                                       _futureUsers =
-                                          _obtenerUsuarios.getUsers();
+                                          _obtenerPersonas.getUsers();
                                     });
                                   },
                                   child: const Text('Eliminar'),
