@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/controllers/userController.dart';
 import 'package:proyecto_integrador_3/user.dart';
 
-import 'package:flutter/material.dart';
-import 'package:proyecto_integrador_3/controllers/userController.dart';
-import 'package:proyecto_integrador_3/user.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 class ListConductoresScreen extends StatefulWidget {
   @override
   _ListConductoresScreenState createState() => _ListConductoresScreenState();
