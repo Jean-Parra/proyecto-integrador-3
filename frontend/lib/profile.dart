@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
-import 'package:proyecto_integrador_3/user.dart';
 import 'package:proyecto_integrador_3/usuarios/historial.dart';
 
 import 'administradores/listaconductor.dart';
@@ -71,20 +70,10 @@ final profiles = [
       DrawerItem(
         icon: Icons.account_circle,
         title: "Perfil",
-        onTap: () async {
+        onTap: () {
           final UserController userController = Get.find<UserController>();
-          userController.setCurrentUser(
-              userController.loggedInUserId); // actualiza el usuario actual
-          try {
-            final UserActual userActual = UserActual();
-            final User user =
-                await userActual.getUsuarioActual(userController.currentUserId);
-            print(user); // Imprime el usuario actual en la consola
-            Get.to(
-                () => PerfilUsuarioPage(userId: userController.currentUserId));
-          } catch (e) {
-            print('Error al cargar el usuario actual: $e');
-          }
+          userController.setCurrentUser('6410ec52fb5112390f6f0fe7'); //
+          Get.to(() => PerfilUsuarioPage(userId: userController.currentUserId));
         },
       ),
       DrawerItem(

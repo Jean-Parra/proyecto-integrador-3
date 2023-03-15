@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, file_names
 
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../login_form.dart';
 import '/conductores/conductor.dart';
@@ -145,7 +146,7 @@ class ObtenerUsuarios {
 }
 
 class UserActual {
-  Future<User> getUsuarioActual(String id) async {
+  static Future<User> getUsuarioActual(String id) async {
     final url = Uri.parse('http://192.168.20.22:3000/usuarios/$id');
     final response = await http.get(url);
 
@@ -177,6 +178,10 @@ class UserController extends GetxController {
   void setCurrentUser(String id) {
     currentUserId = id;
     loggedInUserId = id; // actualiza el valor de loggedInUserId
+  }
+
+  Future<User> getUsuarioActual(String id) async {
+    return await UserActual.getUsuarioActual(id);
   }
 }
 
@@ -279,6 +284,47 @@ class CambiarContrasena {
       print(responseData['message']);
     } else {
       throw Exception(responseData['message']);
+    }
+  }
+}
+
+class EditingUser {
+  static void editarUsuarioActual(
+    String id,
+    String nombre,
+    String email,
+    String telefono,
+  ) async {
+    final String apiUrl =
+        'http://192.168.20.22:3000/usuarios/6410f01d990cdd8b849e90ea';
+
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+
+    final Map<String, dynamic> body = {
+      'name': nombre,
+      'email': email,
+      'phone': telefono,
+    };
+
+    final String jsonBody = jsonEncode(body);
+
+    try {
+      final http.Response response =
+          await http.put(Uri.parse(apiUrl), headers: headers, body: jsonBody);
+
+      if (response.statusCode == 200) {
+        // El usuario fue actualizado correctamente
+        print('Usuario actualizado correctamente');
+      } else {
+        // Hubo un error al actualizar el usuario
+        print(
+            'Error al actualizar el usuario. Código de estado: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Hubo un error en la petición HTTP
+      print('Error al actualizar el usuario: $e');
     }
   }
 }

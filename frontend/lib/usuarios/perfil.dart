@@ -16,47 +16,130 @@ class PerfilUsuarioPage extends StatefulWidget {
 
 class _PerfilUsuarioPageState extends State<PerfilUsuarioPage> {
   late Future<User> _userFuture;
+  final _formKey = GlobalKey<FormState>();
+  late String _nombre;
+  late String _lastname;
+  late String _email;
+  late String _telefono;
 
   @override
   void initState() {
     super.initState();
-    final UserController userController = Get.find<UserController>();
-    _userFuture = UserActual().getUsuarioActual(widget.userId);
+    _userFuture = UserActual.getUsuarioActual(widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Perfil',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Perfil'),
-        ),
-        body: FutureBuilder<User>(
-          future: _userFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final User user = snapshot.data!;
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Perfil de usuario'),
+      ),
+      body: FutureBuilder<User>(
+        future: _userFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final User user = snapshot.data!;
+            _nombre = user.name;
+            _email = user.email;
+            _telefono = user.phone;
+            return Center(
+              child: Form(
+                key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Nombres: ${user.name}'),
-                    Text('Apellidos: ${user.lastname}'),
-                    Text('Celular: ${user.phone}'),
-                    Text('Email: ${user.email}'),
-                    Text('Rol: ${user.role}'),
+                    TextFormField(
+                      initialValue: user.name,
+                      decoration: const InputDecoration(
+                        labelText: 'Nombre',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, ingrese su nombre';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _nombre = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      initialValue: user.email,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, ingrese su email';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _email = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      initialValue: user.phone,
+                      decoration: const InputDecoration(
+                        labelText: 'Teléfono',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, ingrese su teléfono';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _telefono = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            EditingUser.editarUsuarioActual(
+                              widget.userId,
+                              _nombre,
+                              _email,
+                              _telefono,
+                            );
+                            Get.snackbar(
+                              'Perfil actualizado',
+                              'El perfil ha sido actualizado exitosamente',
+                            );
+                          }
+                        } catch (e) {
+                          Get.snackbar(
+                            'Error al actualizar el perfil',
+                            e.toString(),
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      },
+                      child: const Text('Actualizar'),
+                    ),
                   ],
                 ),
-              );
-            } else if (snapshot.hasError) {
-              return Center(child: Text('${snapshot.error}'));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error al cargar el usuario: ${snapshot.error}'),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     );
   }
