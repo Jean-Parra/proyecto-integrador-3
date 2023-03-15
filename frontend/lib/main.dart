@@ -9,6 +9,7 @@ import 'package:proyecto_integrador_3/login_form.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+  Get.put<UserController>(UserController());
   runApp(const MyApp());
 }
 

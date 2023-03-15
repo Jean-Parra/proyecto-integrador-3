@@ -129,6 +129,21 @@ router.get('/usuarios', async (req, res) => {
     }
 });
 
+router.get('/usuarios/:id', async (req, res) => {
+    try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    res.status(200).json(user);
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener el usuario' });
+    }
+});
+
+
+
 router.get('/conductores', async (req, res) => {
     try {
     const users = await User.find({ role: 'conductor' });

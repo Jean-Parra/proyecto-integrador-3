@@ -144,6 +144,42 @@ class ObtenerUsuarios {
   }
 }
 
+class UserActual {
+  Future<User> getUsuarioActual(String id) async {
+    final url = Uri.parse('http://192.168.20.22:3000/usuarios/$id');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic decodedData = json.decode(response.body);
+
+      try {
+        final Map<String, dynamic> jsonMap =
+            decodedData is String ? json.decode(decodedData) : decodedData;
+        final User user = User.fromJson(jsonMap);
+        return user;
+      } catch (e) {
+        print(
+            'Error al decodificar la respuesta del servidor: ${response.body}');
+        throw Exception('Error al cargar el usuario actual2');
+      }
+    } else {
+      print(
+          'Error de red: código de estado ${response.statusCode}, cuerpo de la respuesta: ${response.body}');
+      throw Exception('Error al cargar el usuario actual1');
+    }
+  }
+}
+
+class UserController extends GetxController {
+  late String currentUserId = '';
+  late String loggedInUserId = '';
+
+  void setCurrentUser(String id) {
+    currentUserId = id;
+    loggedInUserId = id; // actualiza el valor de loggedInUserId
+  }
+}
+
 class ObtenerConductores {
   Future<List<User>> getConductores() async {
     final url = Uri.parse('http://192.168.20.22:3000/conductores');
