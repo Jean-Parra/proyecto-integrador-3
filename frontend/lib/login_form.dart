@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 : ElevatedButton(
                     onPressed: _submit,
                     child: const Text(
-                      'Inciar sesión',
+                      'Iniciar sesión',
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
@@ -155,10 +155,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       try {
         _loginController.signIn(_email, _password);
       } catch (e) {
-        setState(() {
-          _loginController.isLoading = false;
-          _loginController.errorMessage = e.toString();
-        });
+        _loginController.isLoading = false;
+        _loginController.errorMessage = e.toString();
       }
       setState(() {
         _loginController.isLoading = false;

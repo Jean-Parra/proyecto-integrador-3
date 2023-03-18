@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, file_names
 
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../login_form.dart';
 import '/conductores/conductor.dart';
@@ -51,6 +52,13 @@ class LoginController {
       errorMessage = response.body;
       isLoading = false;
       print(response.body);
+      Get.snackbar(
+        "Error",
+        "Contraseña incorrecta",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 }
@@ -176,7 +184,7 @@ class UserController extends GetxController {
 
   void setCurrentUser(String id) {
     currentUserId = id;
-    loggedInUserId = id; // actualiza el valor de loggedInUserId
+    loggedInUserId = id;
   }
 
   Future<User> getUsuarioActual(String id) async {
