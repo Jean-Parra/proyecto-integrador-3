@@ -48,9 +48,19 @@ router.get('/logout', function(req, res) {
     res.status(200).send({ auth: false, token: null });
 });
 
-router.get('/user', verifyToken, (req, res) => {
-    res.status(200).send(req.user);
+router.get('/user', verifyToken, async(req, res) => {
+    try {
+        const user = await User.findById(req.userId); // busca el usuario por ID
+        if (!user) {
+            return res.status(404).send({ message: 'Usuario no encontrado' });
+        }
+        res.status(200).send(user); // envía el objeto de usuario encontrado
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error al buscar usuario' });
+    }
 });
+
 
 router.get('/users', async(req, res) => {
     try {
@@ -119,38 +129,38 @@ router.put('/users/:password', async(req, res) => {
     }
 });
 
-router.get('/usuarios', async (req, res) => {
+router.get('/usuarios', async(req, res) => {
     try {
-    const users = await User.find({ role: 'usuario' });
-    res.status(200).json(users);
+        const users = await User.find({ role: 'usuario' });
+        res.status(200).json(users);
     } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al obtener los usuarios' });
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener los usuarios' });
     }
 });
 
-router.get('/usuarios/:id', async (req, res) => {
+router.get('/usuarios/:id', async(req, res) => {
     try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-        return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
-    res.status(200).json(user);
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        res.status(200).json(user);
     } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al obtener el usuario' });
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener el usuario' });
     }
 });
 
 
 
-router.get('/conductores', async (req, res) => {
+router.get('/conductores', async(req, res) => {
     try {
-    const users = await User.find({ role: 'conductor' });
-    res.status(200).json(users);
+        const users = await User.find({ role: 'conductor' });
+        res.status(200).json(users);
     } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al obtener los conductores' });
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener los conductores' });
     }
 });
 

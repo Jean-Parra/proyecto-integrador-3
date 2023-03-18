@@ -34,7 +34,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    print("inicio");
     _token.checkLoginStatus();
+    print("salida");
   }
 
   @override
