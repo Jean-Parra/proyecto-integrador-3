@@ -14,7 +14,7 @@ class GuardarViaje {
     int price,
     String selectedOption,
   ) async {
-    const String url = "http://192.168.0.16:3000/solicitudes";
+    const String url = "http://207.248.81.66/solicitudes";
     final Map<String, dynamic> viaje = {
       "user": user.toJson(),
       "origin": origin,
@@ -42,7 +42,7 @@ class GuardarViaje {
 
 class Datos {
   Future<Map<String, dynamic>> Obtener() async {
-    const url = 'http://192.168.0.16:3000/prices';
+    const url = 'http://207.248.81.66/prices';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
