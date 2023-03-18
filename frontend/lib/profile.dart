@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'package:proyecto_integrador_3/usuarios/historial.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'administradores/historialviajes.dart';
 import 'administradores/listaconductor.dart';
@@ -80,11 +81,10 @@ final profiles = [
         icon: Icons.account_circle,
         title: "Perfil",
         onTap: () async {
-          var jsonResponse = Get.find<LoginController>().jsonResponse;
-          if (jsonResponse != null && jsonResponse.containsKey('user')) {
-            Get.to(() => Perfil(
-                  jsonResponse: jsonResponse,
-                ));
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? token = prefs.getString("token");
+          if (token != null) {
+            Get.to(() => Perfil());
           } else {
             print('El usuario no ha iniciado sesión');
             // mostrar un mensaje de error o redirigir a la pantalla de inicio de sesión

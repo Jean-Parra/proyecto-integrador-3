@@ -11,6 +11,7 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
   Get.put(LoginController()); // Inicializa el controlador LoginController
+  Get.put(PerfilController()); // Inicializa el controlador LoginController
 }
 
 class MyHttpOverrides extends HttpOverrides {

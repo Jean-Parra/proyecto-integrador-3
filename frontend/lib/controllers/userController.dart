@@ -64,6 +64,46 @@ class LoginController {
   }
 }
 
+class PerfilController extends GetxController {
+  var isLoading = true.obs;
+  User? user;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getUserData();
+  }
+
+  Future<void> getUserData() async {
+    isLoading.value = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    if (token != null) {
+      var response = await http.get(
+        Uri.parse("http://207.248.81.66/users"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        print('Response status PERFIL: ${response.statusCode}');
+        print('Response body PERFIL: ${response.body}');
+        if (jsonResponse != null) {
+          user = User.fromJson(jsonResponse);
+        }
+      } else {
+        print(response.body);
+        // Manejo de errores
+      }
+    } else {
+      print('El usuario no ha iniciado sesión');
+      // Manejo de errores
+    }
+    isLoading.value = false;
+    print('isLoading: ${isLoading.value}');
+    print('user: ${user?.toJson()}');
+  }
+}
+
 class RegisterController {
   String errorMessage = "";
   bool isLoading = false;
