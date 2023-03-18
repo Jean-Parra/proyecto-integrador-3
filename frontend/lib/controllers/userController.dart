@@ -55,7 +55,7 @@ class LoginController {
       Get.snackbar(
         "Error",
         "Contraseña incorrecta",
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
