@@ -2,8 +2,8 @@ const app = require('./app')
 require('./connection');
 
 async function init() {
-    await app.listen(3000);
-    console.log('Servidor en Localhost:3000')
+    await app.listen(80);
+    console.log('Servidor en Localhost:80')
 }
 
 init();
