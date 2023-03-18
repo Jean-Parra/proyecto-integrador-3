@@ -16,6 +16,7 @@ class _AdministradorPageState extends State<AdministradorPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Administrador',
       home: Scaffold(
         appBar: AppBar(

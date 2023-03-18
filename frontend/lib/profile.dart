@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'package:proyecto_integrador_3/usuarios/historial.dart';
 
+import 'administradores/historialviajes.dart';
 import 'administradores/listaconductor.dart';
 import 'administradores/listausuario.dart';
 import 'conductores/historial.dart';
@@ -52,6 +53,13 @@ final profiles = [
         },
       ),
       DrawerItem(
+        icon: Icons.travel_explore,
+        title: "Historial de viajes",
+        onTap: () {
+          Get.to(() => HistorialAdministradorPage());
+        },
+      ),
+      DrawerItem(
         icon: Icons.report,
         title: "Cerrar sesion",
         onTap: () {
@@ -71,10 +79,16 @@ final profiles = [
       DrawerItem(
         icon: Icons.account_circle,
         title: "Perfil",
-        onTap: () {
-          final UserController userController = Get.find<UserController>();
-          userController.setCurrentUser('6410ec52fb5112390f6f0fe7'); //
-          Get.to(() => PerfilUsuarioPage(userId: userController.currentUserId));
+        onTap: () async {
+          var jsonResponse = Get.find<LoginController>().jsonResponse;
+          if (jsonResponse != null && jsonResponse.containsKey('user')) {
+            Get.to(() => Perfil(
+                  jsonResponse: jsonResponse,
+                ));
+          } else {
+            print('El usuario no ha iniciado sesión');
+            // mostrar un mensaje de error o redirigir a la pantalla de inicio de sesión
+          }
         },
       ),
       DrawerItem(

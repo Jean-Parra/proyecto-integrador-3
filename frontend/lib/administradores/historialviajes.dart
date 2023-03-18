@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HistorialUsuarioPage extends StatelessWidget {
-  const HistorialUsuarioPage({super.key});
+class HistorialAdministradorPage extends StatelessWidget {
+  const HistorialAdministradorPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Historial',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Historial'),
+          title: const Text('Historial Vajes (ADMINISTRADOR)'),
         ),
         body: const Center(
           child: Text('Vista del Historial'),
