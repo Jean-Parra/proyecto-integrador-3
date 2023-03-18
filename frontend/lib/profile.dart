@@ -5,6 +5,7 @@ import 'package:proyecto_integrador_3/usuarios/historial.dart';
 
 import 'administradores/listaconductor.dart';
 import 'administradores/listausuario.dart';
+import 'conductores/historial.dart';
 import 'controllers/userController.dart';
 import 'usuarios/perfil.dart';
 
@@ -108,7 +109,9 @@ final profiles = [
       DrawerItem(
         icon: Icons.settings,
         title: "Historial",
-        onTap: () {},
+        onTap: () {
+          Get.to(() => HistorialConductorPage());
+        },
       ),
     ],
   ),

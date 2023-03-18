@@ -54,7 +54,7 @@ class LoginController {
       print(response.body);
       Get.snackbar(
         "Error",
-        "Contraseña incorrecta",
+        "Correo o contraseña incorrectos. Por favor verifique e intente nuevamente.",
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.red,
         colorText: Colors.white,
