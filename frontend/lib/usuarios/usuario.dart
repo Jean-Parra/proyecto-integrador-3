@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:proyecto_integrador_3/controllers/routeController.dart';
 import 'package:proyecto_integrador_3/custom_drawer.dart';
 import 'package:proyecto_integrador_3/user.dart';
 
@@ -32,6 +33,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
   GoogleMapController? mapController;
   double? _distance;
   int? _price;
+  final GuardarViaje _viaje = GuardarViaje();
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -271,6 +273,13 @@ class _UsuarioPageState extends State<UsuarioPage> {
                               ),
                               TextButton(
                                 onPressed: () async {
+                                  await _viaje.saveViaje(
+                                      widget.user,
+                                      originController.text,
+                                      destinationController.text,
+                                      _distance!,
+                                      _price!,
+                                      selectedOption);
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Aceptar'),

@@ -8,5 +8,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(morgan('dev'));
 
 app.use(require('./controllers/authController'))
+app.use(require('./controllers/routeController'))
+app.use(require('./controllers/requestController'))
 
 module.exports = app;
