@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 class LoginController {
   String errorMessage = "";
   bool isLoading = false;
+  var jsonResponse; // Declaración de jsonResponse
 
   Future<void> signIn(String email, pass) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -152,7 +153,7 @@ class ObtenerUsuarios {
   }
 }
 
-class UserActual {
+class UserID {
   static Future<User> getUsuarioActual(String id) async {
     final url = Uri.parse('http://207.248.81.66/usuarios/$id');
     final response = await http.get(url);
@@ -175,20 +176,6 @@ class UserActual {
           'Error de red: código de estado ${response.statusCode}, cuerpo de la respuesta: ${response.body}');
       throw Exception('Error al cargar el usuario actual1');
     }
-  }
-}
-
-class UserController extends GetxController {
-  late String currentUserId = '';
-  late String loggedInUserId = '';
-
-  void setCurrentUser(String id) {
-    currentUserId = id;
-    loggedInUserId = id;
-  }
-
-  Future<User> getUsuarioActual(String id) async {
-    return await UserActual.getUsuarioActual(id);
   }
 }
 

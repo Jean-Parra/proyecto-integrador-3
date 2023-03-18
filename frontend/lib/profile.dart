@@ -127,6 +127,13 @@ final profiles = [
           Get.to(() => HistorialConductorPage());
         },
       ),
+      DrawerItem(
+        icon: Icons.report,
+        title: "Cerrar sesion",
+        onTap: () {
+          Get.to(() => const LoginPage());
+        },
+      ),
     ],
   ),
 ];
