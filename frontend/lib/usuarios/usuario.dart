@@ -273,8 +273,9 @@ class _UsuarioPageState extends State<UsuarioPage> {
                               ),
                               TextButton(
                                 onPressed: () async {
+                                  print(widget.user.email);
                                   await _viaje.saveViaje(
-                                      widget.user,
+                                      widget.user.email,
                                       originController.text,
                                       destinationController.text,
                                       _distance!,

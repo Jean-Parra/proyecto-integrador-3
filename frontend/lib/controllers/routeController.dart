@@ -7,7 +7,7 @@ import '../user.dart';
 
 class GuardarViaje {
   Future<void> saveViaje(
-    User user,
+    String user,
     String origin,
     String destination,
     double distance,
@@ -16,7 +16,7 @@ class GuardarViaje {
   ) async {
     const String url = "http://207.248.81.66/solicitudes";
     final Map<String, dynamic> viaje = {
-      "user": user.toJson(),
+      "user": user,
       "origin": origin,
       "destination": destination,
       "distance": distance,

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const RequestSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
+    user: { type: Schema.Types.String, ref: 'Users', required: true },
     origin: { type: String, required: true },
     destination: { type: String, required: true },
     distance: { type: Number, required: true },
