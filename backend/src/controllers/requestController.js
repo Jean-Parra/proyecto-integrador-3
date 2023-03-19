@@ -4,16 +4,17 @@ const Solicitud = require('../models/requestModal');
 
 
 router.post('/solicitudes', async(req, res) => {
-    const { user, origen, destino, distancia, precio, selectedOption } = req.body;
+    const { user, origin, destination, distance, price, selectedOption } = req.body;
     const solicitud = new Solicitud({
         user,
-        origen,
-        destino,
-        distancia,
-        precio,
+        origin,
+        destination,
+        distance,
+        price,
         selectedOption,
-        disponible: true,
+        enable: true,
     });
+
     try {
         const nuevaSolicitud = await solicitud.save();
         res.status(201).json({ message: 'Solicitud creada exitosamente', solicitud: nuevaSolicitud });

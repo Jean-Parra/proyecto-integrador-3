@@ -1,5 +1,5 @@
 class User {
-  String _id;
+  String id;
   String name;
   String lastname;
   String phone;
@@ -8,20 +8,18 @@ class User {
   String role;
 
   User({
-    required String id,
+    required this.id,
     required this.name,
     required this.lastname,
     required this.phone,
     required this.email,
     required this.password,
     required this.role,
-  }) : _id = id;
-
-  String get id => _id;
+  });
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': _id,
+      'id': id,
       'name': name,
       'lastname': lastname,
       'phone': phone,
@@ -33,7 +31,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        id: json['_id'] ?? '',
+        id: json['id'] ?? '',
         name: json['name'] ?? '',
         lastname: json['lastname'] ?? '',
         phone: json['phone'] ?? '',
