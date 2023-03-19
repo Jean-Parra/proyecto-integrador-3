@@ -23,19 +23,22 @@ class GuardarViaje {
       "price": price,
       "selectedOption": selectedOption,
     };
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(viaje),
+      );
 
-    final http.Response response = await http.post(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode(viaje),
-    );
-
-    if (response.statusCode == 200) {
-      print("Viaje guardado correctamente");
-    } else {
-      throw Exception("Error al guardar el viaje");
+      if (response.statusCode == 201) {
+        print("Viaje guardado correctamente");
+      } else {
+        throw Exception("Error al guardar el viaje");
+      }
+    } catch (error) {
+      throw Exception("Error al guardar el viaje: ${error.toString()}");
     }
   }
 }
