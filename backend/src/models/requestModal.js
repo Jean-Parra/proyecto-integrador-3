@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 const RequestSchema = new Schema({
-    user: { type: Schema.Types.String, ref: 'Users', required: true },
-    origin: { type: String, required: true },
-    destination: { type: String, required: true },
-    distance: { type: Number, required: true },
-    price: { type: Number, required: true },
-    selectedOption: { type: String, required: true },
+    email: String,
+    origin: String,
+    destination: String,
+    distance: Number,
+    price: Number,
+    selectedOption: String,
     enable: { type: Boolean, default: true }
 });
 

@@ -7,7 +7,7 @@ import '../user.dart';
 
 class GuardarViaje {
   Future<void> saveViaje(
-    String user,
+    String email,
     String origin,
     String destination,
     double distance,
@@ -15,22 +15,16 @@ class GuardarViaje {
     String selectedOption,
   ) async {
     const String url = "http://207.248.81.66/solicitudes";
-    final Map<String, dynamic> viaje = {
-      "user": user,
-      "origin": origin,
-      "destination": destination,
-      "distance": distance,
-      "price": price,
-      "selectedOption": selectedOption,
-    };
+
     try {
-      final http.Response response = await http.post(
-        Uri.parse(url),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(viaje),
-      );
+      final response = await http.post(Uri.parse(url), body: {
+        "email": email,
+        "origin": origin,
+        "destination": destination,
+        "distance": distance,
+        "price": price,
+        "selectedOption": selectedOption,
+      });
 
       if (response.statusCode == 201) {
         print("Viaje guardado correctamente");

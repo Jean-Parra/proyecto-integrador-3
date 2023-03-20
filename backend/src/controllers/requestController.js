@@ -4,9 +4,9 @@ const Solicitud = require('../models/requestModal');
 
 
 router.post('/solicitudes', async(req, res) => {
-    const { user, origin, destination, distance, price, selectedOption } = req.body;
+    const { email, origin, destination, distance, price, selectedOption } = req.body;
     const solicitud = new Solicitud({
-        user,
+        email,
         origin,
         destination,
         distance,
