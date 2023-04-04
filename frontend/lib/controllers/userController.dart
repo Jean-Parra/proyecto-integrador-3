@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, file_names
+// ignore_for_file: avoid_print, file_names, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -329,7 +329,7 @@ class EditingUser {
     String email,
     String telefono,
   ) async {
-    final String apiUrl =
+    const String apiUrl =
         'http://207.248.81.66/usuarios/6410f01d990cdd8b849e90ea';
 
     final Map<String, String> headers = {

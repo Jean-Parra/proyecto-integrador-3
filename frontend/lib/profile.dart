@@ -1,14 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'package:proyecto_integrador_3/usuarios/historial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'administradores/historialviajes.dart';
 import 'administradores/listaconductor.dart';
 import 'administradores/listausuario.dart';
 import 'conductores/historial.dart';
-import 'controllers/userController.dart';
 import 'usuarios/perfil.dart';
 
 class Profile {
@@ -50,14 +50,14 @@ final profiles = [
         icon: Icons.people,
         title: "Lista de conductores",
         onTap: () {
-          Get.to(() => ListConductoresScreen());
+          Get.to(() => const ListConductoresScreen());
         },
       ),
       DrawerItem(
         icon: Icons.travel_explore,
         title: "Historial de viajes",
         onTap: () {
-          Get.to(() => HistorialAdministradorPage());
+          Get.to(() => const HistorialAdministradorPage());
         },
       ),
       DrawerItem(
@@ -84,7 +84,7 @@ final profiles = [
           SharedPreferences prefs = await SharedPreferences.getInstance();
           String? token = prefs.getString("token");
           if (token != null) {
-            Get.to(() => Perfil());
+            Get.to(() => const Perfil());
           } else {
             print('El usuario no ha iniciado sesión');
             // mostrar un mensaje de error o redirigir a la pantalla de inicio de sesión

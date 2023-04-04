@@ -281,6 +281,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
                                       _distance!,
                                       _price!,
                                       selectedOption);
+                                  // ignore: use_build_context_synchronously
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Aceptar'),

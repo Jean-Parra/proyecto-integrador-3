@@ -19,7 +19,6 @@ class _OlvidoPageState extends State<OlvidoPage> {
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  String _recoveryCode = '';
 
   @override
   void dispose() {
@@ -66,6 +65,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                     if (_formKey.currentState!.validate()) {
                       final user = await _obtenerUsuario
                           .getUserByEmail(_emailController.text);
+                      // ignore: unnecessary_null_comparison
                       if (user != null) {
                         final smtpServer = SmtpServer('smtp.office365.com',
                             username: 'pi3_2023@hotmail.com',
@@ -83,6 +83,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                               '<p>Hola, ${user['name']}.</p><p>Tu código de recuperación de contraseña es: $randomCode. Por favor, ingresa este código en la app para cambiar tu contraseña.</p>';
                         try {
                           await send(message, smtpServer);
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -155,12 +156,13 @@ class _OlvidoPageState extends State<OlvidoPage> {
                                         final code =
                                             int.tryParse(codeController.text) ??
                                                 0;
-                                        if (user != null &&
-                                            code == randomCode) {
+                                        if (code == randomCode) {
                                           await _cambiarContrasena
                                               .updatePassword(user['email'],
                                                   passwordController.text);
+                                          // ignore: use_build_context_synchronously
                                           Navigator.of(context).pop();
+                                          // ignore: use_build_context_synchronously
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
@@ -198,7 +200,9 @@ class _OlvidoPageState extends State<OlvidoPage> {
                             },
                           );
                           if (newPasswordAndCode != null &&
+                              // ignore: unrelated_type_equality_checks
                               newPasswordAndCode['success'] == true) {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -206,8 +210,10 @@ class _OlvidoPageState extends State<OlvidoPage> {
                                 ),
                               ),
                             );
+                            // ignore: use_build_context_synchronously
                             Navigator.of(context)
                                 .popUntil((route) => route.isFirst);
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -218,6 +224,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                           }
                         } on MailerException catch (e) {
                           print('Error al enviar correo: $e');
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -227,6 +234,7 @@ class _OlvidoPageState extends State<OlvidoPage> {
                           );
                         }
                       } else {
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(

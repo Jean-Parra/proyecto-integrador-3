@@ -9,13 +9,13 @@ class Perfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
+        title: const Text('Perfil'),
       ),
       body: GetBuilder<PerfilController>(
         init: PerfilController(),
         builder: (controller) {
           if (controller.isLoading.value) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {

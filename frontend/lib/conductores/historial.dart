@@ -57,7 +57,7 @@ class HistorialConductorPage extends StatelessWidget {
                 subtitle: Text(viaje['fecha']),
                 trailing: Text(
                   viaje['costo'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

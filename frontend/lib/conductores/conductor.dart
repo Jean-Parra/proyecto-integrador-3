@@ -7,10 +7,10 @@ class ConductorPage extends StatefulWidget {
   const ConductorPage({Key? key, required this.user}) : super(key: key);
 
   @override
-  _ConductorPageState createState() => _ConductorPageState();
+  ConductorPageState createState() => ConductorPageState();
 }
 
-class _ConductorPageState extends State<ConductorPage> {
+class ConductorPageState extends State<ConductorPage> {
   bool _activo = false;
 
   void _toggleActivo() {
@@ -32,19 +32,20 @@ class _ConductorPageState extends State<ConductorPage> {
           children: [
             Text(
               'Estado: ${_activo ? 'Activo' : 'Inactivo'}',
-              style: TextStyle(fontSize: 24.0),
+              style: const TextStyle(fontSize: 24.0),
             ),
-            SizedBox(height: 24.0),
+            const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () => _toggleActivo(),
-              child: Text(_activo ? 'Inactivo' : 'Activo'),
               style: ElevatedButton.styleFrom(
-                primary: _activo ? Colors.red : Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                backgroundColor: _activo ? Colors.red : Colors.blue,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 32.0, vertical: 16.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24.0),
                 ),
               ),
+              child: Text(_activo ? 'Inactivo' : 'Activo'),
             ),
           ],
         ),

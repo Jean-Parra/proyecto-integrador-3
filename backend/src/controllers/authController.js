@@ -153,6 +153,7 @@ router.get('/usuarios/:id', async(req, res) => {
 });
 
 
+
 router.get('/conductores', async(req, res) => {
     try {
         const users = await User.find({ role: 'conductor' });

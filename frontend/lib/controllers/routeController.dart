@@ -3,8 +3,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../user.dart';
-
 class GuardarViaje {
   Future<void> saveViaje(
     String email,
