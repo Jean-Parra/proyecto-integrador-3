@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
 
 const TripSchema = new Schema({
-    user: { type: Object, required: true },
-    diver: { type: Object, required: true },
+    user: { type: String, required: true },
+    driver: { type: String, required: true },
     origin: { type: String, required: true },
     destination: { type: String, required: true },
     distance: { type: Number, required: true },

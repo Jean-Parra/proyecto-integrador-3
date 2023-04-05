@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../Models/solicitudes.dart';
+
 class GuardarViaje {
   Future<void> saveViaje(
     String email,
@@ -12,15 +14,15 @@ class GuardarViaje {
     int price,
     String selectedOption,
   ) async {
-    const String url = "http://207.248.81.66/solicitudes";
+    const String url = "http://192.168.0.24:3000/solicitudes";
 
     try {
       final response = await http.post(Uri.parse(url), body: {
         "email": email,
         "origin": origin,
         "destination": destination,
-        "distance": distance,
-        "price": price,
+        "distance": distance.toString(),
+        "price": price.toString(),
         "selectedOption": selectedOption,
       });
 
@@ -30,6 +32,7 @@ class GuardarViaje {
         throw Exception("Error al guardar el viaje");
       }
     } catch (error) {
+      print("no se que paso");
       throw Exception("Error al guardar el viaje: ${error.toString()}");
     }
   }
@@ -37,7 +40,7 @@ class GuardarViaje {
 
 class Datos {
   Future<Map<String, dynamic>> Obtener() async {
-    const url = 'http://207.248.81.66/prices';
+    const url = 'http://192.168.0.24:3000/prices';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -45,6 +48,55 @@ class Datos {
       return json;
     } else {
       throw Exception('Error al buscar precios');
+    }
+  }
+}
+
+class MostrarSolicitudes {
+  Future<List<Solicitud>> fetchSolicitudes() async {
+    final url = Uri.parse('http://192.168.0.24:3000/solicitudes/activas');
+    final response = await http.get(url);
+
+    if (response.statusCode == 201) {
+      final jsonMap = jsonDecode(response.body) as Map<String, dynamic>;
+      final jsonList = jsonMap['solicitudes'] as List<dynamic>;
+      return jsonList.map((json) => Solicitud.fromJson(json)).toList();
+    } else {
+      throw Exception('Error al cargar las solicitudes');
+    }
+  }
+}
+
+class GuardarViajes {
+  Future<void> aceptarSolicitud(
+    String user,
+    String driver,
+    String origin,
+    String destination,
+    double distance,
+    int price,
+    String selectedOption,
+  ) async {
+    const String url = "http://192.168.0.24:3000/solicitudes/aceptar";
+    try {
+      final response = await http.post(Uri.parse(url), body: {
+        "user": user,
+        "driver": driver,
+        "origin": origin,
+        "destination": destination,
+        "distance": distance.toString(),
+        "price": price.toString(),
+        "selectedOption": selectedOption,
+      });
+
+      if (response.statusCode == 201) {
+        print("viaje aceptado");
+      } else {
+        print(response.statusCode);
+        throw Exception('Error al aceptar la solicitud');
+      }
+    } catch (error) {
+      throw Exception("Error al guardar el viaje: ${error.toString()}");
     }
   }
 }

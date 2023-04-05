@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/controllers/userController.dart';
-import 'package:proyecto_integrador_3/user.dart';
+import 'package:proyecto_integrador_3/Models/user.dart';
 
 class ListConductoresScreen extends StatefulWidget {
   const ListConductoresScreen({super.key});

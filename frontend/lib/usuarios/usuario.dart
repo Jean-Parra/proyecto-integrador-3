@@ -11,7 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyecto_integrador_3/controllers/routeController.dart';
 import 'package:proyecto_integrador_3/custom_drawer.dart';
-import 'package:proyecto_integrador_3/user.dart';
+import 'package:proyecto_integrador_3/Models/user.dart';
 
 const kGoogleApiKey = "AIzaSyAv0rPS4ryGf6NcHoNas_VQbu5phAnAyXA";
 
@@ -216,7 +216,8 @@ class _UsuarioPageState extends State<UsuarioPage> {
                 ElevatedButton(
                   child: const Text('Trazar camino'),
                   onPressed: () async {
-                    getRoutePoints();
+                    await getRoutePoints();
+                    // ignore: use_build_context_synchronously
                     await showDialog(
                         context: context,
                         builder: (context) {
@@ -273,7 +274,6 @@ class _UsuarioPageState extends State<UsuarioPage> {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  print(widget.user.email);
                                   await _viaje.saveViaje(
                                       widget.user.email,
                                       originController.text,

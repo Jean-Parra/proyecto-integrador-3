@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_3/custom_drawer.dart';
-import 'package:proyecto_integrador_3/user.dart'; // importa User
+import 'package:proyecto_integrador_3/Models/user.dart'; // importa User
 import 'userList.dart';
 
 class AdministradorPage extends StatefulWidget {

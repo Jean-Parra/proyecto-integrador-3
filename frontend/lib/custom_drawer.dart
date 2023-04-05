@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'profile.dart';
-import 'user.dart';
+import 'Models/user.dart';
 
 class CustomDrawer extends StatelessWidget {
   final String profileName;
