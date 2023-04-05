@@ -14,7 +14,7 @@ class GuardarViaje {
     int price,
     String selectedOption,
   ) async {
-    const String url = "http://192.168.0.24:3000/solicitudes";
+    const String url = "http://207.248.81.66/solicitudes";
 
     try {
       final response = await http.post(Uri.parse(url), body: {
@@ -40,7 +40,7 @@ class GuardarViaje {
 
 class Datos {
   Future<Map<String, dynamic>> Obtener() async {
-    const url = 'http://192.168.0.24:3000/prices';
+    const url = 'http://207.248.81.66/prices';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -54,7 +54,7 @@ class Datos {
 
 class MostrarSolicitudes {
   Future<List<Solicitud>> fetchSolicitudes() async {
-    final url = Uri.parse('http://192.168.0.24:3000/solicitudes/activas');
+    final url = Uri.parse('http://207.248.81.66/solicitudes/activas');
     final response = await http.get(url);
 
     if (response.statusCode == 201) {
@@ -77,7 +77,7 @@ class GuardarViajes {
     int price,
     String selectedOption,
   ) async {
-    const String url = "http://192.168.0.24:3000/solicitudes/aceptar";
+    const String url = "http://207.248.81.66/solicitudes/aceptar";
     try {
       final response = await http.post(Uri.parse(url), body: {
         "user": user,
