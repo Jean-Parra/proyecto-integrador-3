@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../Models/solicitudes.dart';
+import '../Models/vieja.dart';
 
 class GuardarViaje {
   Future<void> saveViaje(
@@ -14,7 +15,7 @@ class GuardarViaje {
     int price,
     String selectedOption,
   ) async {
-    const String url = "http://207.248.81.66/solicitudes";
+    const String url = "http://192.168.20.22/solicitudes";
 
     try {
       final response = await http.post(Uri.parse(url), body: {
@@ -40,7 +41,7 @@ class GuardarViaje {
 
 class Datos {
   Future<Map<String, dynamic>> Obtener() async {
-    const url = 'http://207.248.81.66/prices';
+    const url = 'http://192.168.20.22/prices';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -54,7 +55,7 @@ class Datos {
 
 class MostrarSolicitudes {
   Future<List<Solicitud>> fetchSolicitudes() async {
-    final url = Uri.parse('http://207.248.81.66/solicitudes/activas');
+    final url = Uri.parse('http://192.168.20.22/solicitudes/activas');
     final response = await http.get(url);
 
     if (response.statusCode == 201) {
@@ -77,7 +78,7 @@ class GuardarViajes {
     int price,
     String selectedOption,
   ) async {
-    const String url = "http://207.248.81.66/solicitudes/aceptar";
+    const String url = "http://192.168.20.22/solicitudes/aceptar";
     try {
       final response = await http.post(Uri.parse(url), body: {
         "user": user,
@@ -97,6 +98,25 @@ class GuardarViajes {
       }
     } catch (error) {
       throw Exception("Error al guardar el viaje: ${error.toString()}");
+    }
+  }
+}
+
+class ObtenerViajes {
+  Future<List<Viaje>> obtenerSolicitudesAceptadas() async {
+    const String url = "http://192.168.20.22/solicitudes/aceptadas";
+    try {
+      final response = await http.get(Uri.parse(url));
+      print(response.body);
+      if (response.statusCode == 200) {
+        // Aquí puedes procesar los datos de respuesta
+        final data = jsonDecode(response.body);
+        return List<Viaje>.from(data.map((viaje) => Viaje.fromJson(viaje)));
+      } else {
+        throw Exception('Error al obtener las solicitudes aceptadas');
+      }
+    } catch (error) {
+      throw Exception('Error de conexión: $error');
     }
   }
 }

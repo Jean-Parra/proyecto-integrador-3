@@ -31,12 +31,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final VerificarToken _token = VerificarToken();
+  //final VerificarToken _token = VerificarToken();
   @override
   void initState() {
     super.initState();
     print("inicio");
-    _token.checkLoginStatus();
+    // _token.checkLoginStatus();
     print("salida");
   }
 

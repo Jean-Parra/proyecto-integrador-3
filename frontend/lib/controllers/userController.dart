@@ -22,7 +22,7 @@ class LoginController {
     // ignore: avoid_init_to_null
     var jsonResponse = null;
     var response =
-        await http.post(Uri.parse("http://207.248.81.66/signin"), body: data);
+        await http.post(Uri.parse("http://192.168.20.22/signin"), body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print('Response status: ${response.statusCode}');
@@ -80,7 +80,7 @@ class PerfilController extends GetxController {
     String? token = prefs.getString("token");
     if (token != null) {
       var response = await http.get(
-        Uri.parse("http://207.248.81.66/users"),
+        Uri.parse("http://192.168.20.22/users"),
         headers: {"Authorization": "Bearer $token"},
       );
       if (response.statusCode == 200) {
@@ -110,7 +110,7 @@ class RegisterController {
 
   Future<void> register(String name, String lastname, String phone,
       String email, String password, String role) async {
-    final uri = Uri.parse("http://207.248.81.66/signup");
+    final uri = Uri.parse("http://192.168.20.22/signup");
     final response = await http.post(uri, body: {
       'name': name,
       'lastname': lastname,
@@ -168,7 +168,7 @@ class RegisterController {
 
 class ObtenerPersonas {
   Future<List<User>> getUsers() async {
-    final url = Uri.parse('http://207.248.81.66/users');
+    final url = Uri.parse('http://192.168.20.22/users');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -182,7 +182,7 @@ class ObtenerPersonas {
 
 class ObtenerUsuarios {
   Future<List<User>> getUsuarios() async {
-    final url = Uri.parse('http://207.248.81.66/usuarios');
+    final url = Uri.parse('http://192.168.20.22/usuarios');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -204,7 +204,7 @@ class ObtenerUsuarios {
 
 class UserID {
   static Future<User> getUsuarioActual(String id) async {
-    final url = Uri.parse('http://207.248.81.66/usuarios/$id');
+    final url = Uri.parse('http://192.168.20.22/usuarios/$id');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -230,7 +230,7 @@ class UserID {
 
 class ObtenerConductores {
   Future<List<User>> getConductores() async {
-    final url = Uri.parse('http://207.248.81.66/conductores');
+    final url = Uri.parse('http://192.168.20.22/conductores');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -248,14 +248,14 @@ class ObtenerConductores {
   }
 }
 
-class VerificarToken {
+/*class VerificarToken {
   Future<void> checkLoginStatus() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.getString("token") == null) {
       print("token vacio");
       Get.to(() => const LoginPage());
     } else {
-      final url = Uri.parse('http://207.248.81.66/user');
+      final url = Uri.parse('http://192.168.20.22/user');
       final headers = {
         'x-access-token': sharedPreferences.getString("token") ?? '',
         'Content-Type': 'application/json'
@@ -284,11 +284,11 @@ class VerificarToken {
       }
     }
   }
-}
+}*/
 
 class EliminarUsuario {
   Future<void> eliminarUsuario(String email, String deleteRazon) async {
-    final uri = Uri.parse('http://207.248.81.66/users/$email');
+    final uri = Uri.parse('http://192.168.20.22/users/$email');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({'deleteReason': deleteRazon});
 
@@ -304,7 +304,7 @@ class EliminarUsuario {
 class ObtenerUsuario {
   Future<Map<String, dynamic>> getUserByEmail(String email) async {
     final response =
-        await http.get(Uri.parse('http://207.248.81.66/users/$email'));
+        await http.get(Uri.parse('http://192.168.20.22/users/$email'));
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
@@ -316,7 +316,7 @@ class ObtenerUsuario {
 
 class CambiarContrasena {
   Future<void> updatePassword(String email, String newPassword) async {
-    final url = Uri.parse('http://207.248.81.66/users/:password');
+    final url = Uri.parse('http://192.168.20.22/users/:password');
     final headers = {'Content-Type': 'application/json'};
     final body = json.encode({'email': email, 'newPassword': newPassword});
 
@@ -339,7 +339,7 @@ class EditingUser {
     String telefono,
   ) async {
     const String apiUrl =
-        'http://207.248.81.66/usuarios/6410f01d990cdd8b849e90ea';
+        'http://192.168.20.22/usuarios/6410f01d990cdd8b849e90ea';
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json',

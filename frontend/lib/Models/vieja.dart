@@ -22,13 +22,13 @@ class Viaje {
   factory Viaje.fromJson(Map<String, dynamic> json) {
     return Viaje(
       id: json['_id'],
-      usuario: json['email'],
-      conductor: json['conductor'],
-      origin: json['origin'],
-      destination: json['destination'],
-      distance: json['distance'].toDouble(),
-      price: json['price'],
-      selectedOption: json['selectedOption'],
+      usuario: json['user'] ?? '',
+      conductor: json['driver'] ?? '',
+      origin: json['origin'] ?? '',
+      destination: json['destination'] ?? '',
+      distance: json['distance']?.toDouble() ?? 0.0,
+      price: json['price'] ?? 0,
+      selectedOption: json['selectedOption'] ?? '',
     );
   }
 }

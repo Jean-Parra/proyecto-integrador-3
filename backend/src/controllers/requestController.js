@@ -55,5 +55,17 @@ router.post('/solicitudes/aceptar', async(req, res) => {
     }
 });
 
+router.get('/solicitudes/aceptadas', async (req, res) => {
+    try {
+    const viajesAceptados = await Viaje.find();
+    res.status(200).json(viajesAceptados);
+    } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error al obtener las solicitudes aceptadas', error });
+    }
+});
+
+
+
 
 module.exports = router;
