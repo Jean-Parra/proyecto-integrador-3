@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_field, unrelated_type_equality_checks, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'controllers/userController.dart';
 
@@ -287,6 +288,7 @@ class _SignupPageState extends State<SignupPage> {
       try {
         _registerController.register(_data["name"], _data["lastname"],
             _data["phone"], _data["email"], _data["password"], _data["role"]);
+        _registerController.isLoading = false;
       } catch (e) {
         setState(() {
           _registerController.isLoading = false;

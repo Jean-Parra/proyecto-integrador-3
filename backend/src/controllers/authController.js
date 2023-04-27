@@ -9,6 +9,11 @@ const config = require('../config');
 
 router.post('/signup', async(req, res) => {
     try {
+        const correo = await User.findOne({ email: req.body.email })
+        if (correo) {
+            return res.status(401).send('El correo ya esta registrado');
+        }
+
         const { name, lastname, phone, email, password, role } = req.body;
         const user = new User({ name, lastname, phone, email, password, role });
         user.password = await user.encryptPassword(password);

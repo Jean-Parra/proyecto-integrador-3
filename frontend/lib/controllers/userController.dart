@@ -108,8 +108,6 @@ class RegisterController {
   String errorMessage = "";
   bool isLoading = false;
 
-  late SharedPreferences sharedPreferences;
-
   Future<void> register(String name, String lastname, String phone,
       String email, String password, String role) async {
     final uri = Uri.parse("http://207.248.81.66/signup");
@@ -127,8 +125,12 @@ class RegisterController {
       jsonResponse = json.decode(response.body);
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
+      print(jsonResponse['token']);
       if (jsonResponse != null) {
         isLoading = false;
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+
         await sharedPreferences.setString("token", jsonResponse['token']);
         User user = User.fromJson(jsonResponse['user']);
         switch (jsonResponse['user']['role']) {
@@ -153,6 +155,13 @@ class RegisterController {
       errorMessage = response.body;
       isLoading = false;
       print(response.body);
+      Get.snackbar(
+        "Error",
+        "El correo ya esta registrado",
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 }
