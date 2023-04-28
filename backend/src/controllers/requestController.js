@@ -2,6 +2,8 @@ const { Router } = require('express')
 const router = Router();
 const Solicitud = require('../models/requestModal');
 const Viaje = require('../models/tripModal');
+const userShema = require('../models/userModal');
+
 
 
 router.post('/solicitudes', async(req, res) => {
@@ -64,6 +66,34 @@ router.get('/solicitudes/aceptadas', async (req, res) => {
     res.status(500).json({ message: 'Error al obtener las solicitudes aceptadas', error });
     }
 });
+
+router.post('/usuarios/edits/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        const { name, lastname, phone } = req.body;
+
+        // Buscar el usuario por correo electrónico
+        const usuario = await userShema.findOne({ email });
+
+        if (!usuario) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Actualizar los datos del usuario
+        usuario.name = name || usuario.name;
+        usuario.lastname = lastname || usuario.lastname;
+        usuario.phone = phone || usuario.phone;
+
+        // Guardar los cambios en la base de datos
+        await usuario.save();
+
+        res.status(200).json({ message: 'Usuario actualizado correctamente', usuario });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error al actualizar el usuario', error });
+    }
+});
+
 
 
 

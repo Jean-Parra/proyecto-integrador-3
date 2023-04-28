@@ -49,65 +49,114 @@ class HistorialAdministradorPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Usuario: ${viaje.usuario}',
+                        'Usuario:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.blue[800],
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.usuario}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'Conductor: ${viaje.conductor}',
+                        'Conductor:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.blue[800],
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.conductor}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 12),
                       Text(
-                        'Origen: ${viaje.origin}',
+                        'Origen:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.deepPurple,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.origin}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'Destino: ${viaje.destination}',
+                        'Destino:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.deepPurple,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.destination}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 12),
                       Text(
-                        'Distancia: ${viaje.distance} Kilometros',
+                        'Distancia:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.red[800],
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.distance} Kilometros',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'Precio: ${viaje.price}',
+                        'Precio:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.red[800],
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.price} pesos',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'Tipo de Pago: ${viaje.selectedOption}',
+                        'Tipo de Pago:',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.red[800],
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${viaje.selectedOption}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                     ],

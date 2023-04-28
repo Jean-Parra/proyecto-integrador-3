@@ -35,11 +35,6 @@ final profiles = [
         onTap: () {},
       ),
       DrawerItem(
-        icon: Icons.settings,
-        title: "Perfil",
-        onTap: () {},
-      ),
-      DrawerItem(
         icon: Icons.people,
         title: "Lista de usuarios",
         onTap: () {
@@ -87,13 +82,12 @@ final profiles = [
         title: "Perfil",
         onTap: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
-          String? token = prefs.getString("token");
-          if (token != null) {
-            Get.to(() => const Perfil());
-          } else {
-            print('El usuario no ha iniciado sesión');
-            // mostrar un mensaje de error o redirigir a la pantalla de inicio de sesión
-          }
+          String userEdit = prefs.getString('userEdit') ?? '';
+          print('Correo recuperado de SharedPreferences: $userEdit');
+          Get.to(() => UserProfileEditor(
+                authToken: '',
+                userEmail: userEdit,
+              ));
         },
       ),
       DrawerItem(
@@ -110,7 +104,6 @@ final profiles = [
           // Eliminar datos de SharedPreferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.clear();
-
           // Navegar a la página de inicio de sesión
           Get.offAll(() => const LoginPage());
         },
@@ -128,7 +121,15 @@ final profiles = [
       DrawerItem(
         icon: Icons.account_circle,
         title: "Perfil",
-        onTap: () {},
+        onTap: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String userEdit = prefs.getString('userEdit') ?? '';
+          print('Correo recuperado de SharedPreferences: $userEdit');
+          Get.to(() => UserProfileEditor(
+                authToken: '',
+                userEmail: userEdit,
+              ));
+        },
       ),
       DrawerItem(
         icon: Icons.settings,

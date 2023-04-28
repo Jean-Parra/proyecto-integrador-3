@@ -160,9 +160,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('driverEmail', _email);
         await prefs.setString('userEmail', _email);
+        await prefs.setString('userEdit', _email);
 
         String? driverEmail = prefs.getString('driverEmail');
         String? userEmail = prefs.getString('userEmail');
+        String? userEdit = prefs.getString('userEdit');
         print('Su correo es: $driverEmail');
       } catch (e) {
         setState(() {
