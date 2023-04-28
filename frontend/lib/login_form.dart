@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'controllers/userController.dart';
 import 'package:proyecto_integrador_3/signup_form.dart';
 import 'olvido.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -153,10 +154,21 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         _loginController.errorMessage = "";
       });
       try {
-        _loginController.signIn(_email, _password);
+        await _loginController.signIn(_email, _password);
+
+        // Agregar estas líneas para guardar el correo electrónico en SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('driverEmail', _email);
+        await prefs.setString('userEmail', _email);
+
+        String? driverEmail = prefs.getString('driverEmail');
+        String? userEmail = prefs.getString('userEmail');
+        print('Su correo es: $driverEmail');
       } catch (e) {
-        _loginController.isLoading = false;
-        _loginController.errorMessage = e.toString();
+        setState(() {
+          _loginController.isLoading = false;
+          _loginController.errorMessage = e.toString();
+        });
       }
       setState(() {
         _loginController.isLoading = false;

@@ -63,8 +63,13 @@ final profiles = [
       DrawerItem(
         icon: Icons.report,
         title: "Cerrar sesion",
-        onTap: () {
-          Get.to(() => const LoginPage());
+        onTap: () async {
+          // Eliminar datos de SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.clear();
+
+          // Navegar a la página de inicio de sesión
+          Get.offAll(() => const LoginPage());
         },
       ),
     ],
@@ -101,8 +106,13 @@ final profiles = [
       DrawerItem(
         icon: Icons.report,
         title: "Cerrar sesion",
-        onTap: () {
-          Get.to(() => const LoginPage());
+        onTap: () async {
+          // Eliminar datos de SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.clear();
+
+          // Navegar a la página de inicio de sesión
+          Get.offAll(() => const LoginPage());
         },
       ),
     ],
@@ -130,8 +140,13 @@ final profiles = [
       DrawerItem(
         icon: Icons.report,
         title: "Cerrar sesion",
-        onTap: () {
-          Get.to(() => const LoginPage());
+        onTap: () async {
+          // Eliminar datos de SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.clear();
+
+          // Navegar a la página de inicio de sesión
+          Get.offAll(() => const LoginPage());
         },
       ),
     ],

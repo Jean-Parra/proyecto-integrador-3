@@ -120,3 +120,45 @@ class ObtenerViajes {
     }
   }
 }
+
+class TripControllerConductor {
+  static const baseUrl = 'http://192.168.20.22';
+
+  static Future<List<dynamic>> getTripsByEmail(
+      String authToken, String email) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/trips/$email'), headers: {
+      'Authorization': 'Bearer $authToken',
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to get trips');
+    }
+  }
+
+  static getTripsByEmailUser(String authToken, String driverEmail) {}
+}
+
+class TripControllerUser {
+  static const baseUrl = 'http://192.168.20.22';
+
+  static Future<List<dynamic>> getTripsByEmailUser(
+      String authToken, String email) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/trips/user/$email'), headers: {
+      'Authorization': 'Bearer $authToken',
+      'Content-Type': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      final trips = json.decode(response.body);
+      print(trips);
+      return trips;
+    } else {
+      throw Exception('Failed to get trips');
+    }
+  }
+}

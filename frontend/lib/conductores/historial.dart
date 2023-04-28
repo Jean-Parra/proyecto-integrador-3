@@ -1,73 +1,162 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../controllers/routeController.dart';
 
 class HistorialConductorPage extends StatelessWidget {
-  HistorialConductorPage({super.key});
-
-  // Ejemplo de datos de viajes
-  final List<Map<String, dynamic>> _viajes = [
-    {
-      'fecha': '10 de Marzo, 2022',
-      'origen': 'Piedecuesta',
-      'destino': 'Bucaramanga',
-      'costo': '\$15.000',
-    },
-    {
-      'fecha': '15 de Marzo, 2022',
-      'origen': 'Parque SanPio',
-      'destino': 'UPB',
-      'costo': '\$10.000',
-    },
-    {
-      'fecha': '20 de Marzo, 2022',
-      'origen': 'Floridablanca',
-      'destino': 'Piedecuesta',
-      'costo': '\$12.000',
-    },
-  ];
+  const HistorialConductorPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Historial',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Historial de viajes (CONDUCTOR)'),
-        ),
-        body: ListView.builder(
-          itemCount: _viajes.length,
-          itemBuilder: (context, index) {
-            final viaje = _viajes[index];
-            return Container(
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: ListTile(
-                title: Text(viaje['origen'] + ' - ' + viaje['destino']),
-                subtitle: Text(viaje['fecha']),
-                trailing: Text(
-                  viaje['costo'],
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            );
-          },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Historial de viajes (CONDUCTOR)'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
+      body: FutureBuilder(
+        future: _getTripsAndDriverEmail(),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error al cargar los datos: ${snapshot.error}'),
+            );
+          } else {
+            final trips = snapshot.data![0];
+            final driverEmail = snapshot.data![1];
+
+            if (trips.isEmpty) {
+              return Center(
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Text(
+                    'No tienes viajes por el momento',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+            return ListView.builder(
+              itemCount: trips.length,
+              itemBuilder: (BuildContext context, int index) {
+                final trip = trips[index];
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 3,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Viaje ${index + 1}',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    subtitle: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Usuario: ${trip['user']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Conductor: ${trip['driver']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Origen: ${trip['origin']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Destino: ${trip['destination']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Distancia: ${trip['distance']} Kilometros',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Precio: ${trip['price']} pesos',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Metodo de pago: ${trip['selectedOption']}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
     );
+  }
+
+  Future<List<dynamic>> _getTripsAndDriverEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userEmail = prefs.getString('userEmail') ?? '';
+    final authToken = prefs.getString('authToken') ?? '';
+
+    final trips =
+        await TripControllerConductor.getTripsByEmail(authToken, userEmail);
+    return [trips, userEmail];
   }
 }
