@@ -24,6 +24,8 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController? _email;
   TextEditingController? _usuario;
   TextEditingController? _role;
+  String? _selectedRole;
+
   bool _isCheckedusuario = false;
   bool _isCheckedconductor = false;
   TextEditingController? _password;
@@ -39,233 +41,253 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('assets/profile.jpg'),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextFormField(
-                controller: _name,
-                validator: (input) {
-                  if (input!.isEmpty) {
-                    return 'Por favor ingrese un nombre';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  labelText: 'Nombre',
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                onChanged: (value) => {_data['name'] = value},
-                style: const TextStyle(color: Colors.black),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextFormField(
-                controller: _lastname,
-                validator: (input) {
-                  if (input!.isEmpty) {
-                    return 'Por favor ingrese un apellido';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  labelText: 'Apellido',
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                onChanged: (value) => {_data['lastname'] = value},
-                style: const TextStyle(color: Colors.black),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextFormField(
-                controller: _phone,
-                validator: (input) {
-                  if (input!.isEmpty) {
-                    return 'Por favor ingrese un número de teléfono';
-                  }
-                  return null;
-                },
-                onSaved: (newValue) => _phone,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.phone),
-                  labelText: 'Número de teléfono',
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                onChanged: (value) => {_data['phone'] = value},
-                style: const TextStyle(color: Colors.black),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextFormField(
-                controller: _email,
-                validator: (input) {
-                  if (input!.isEmpty) {
-                    return 'Por favor ingrese un correo electrónico';
-                  }
-                  if (!input.contains('@')) {
-                    return 'Por favor, introduce una dirección de correo electrónico válida';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.email),
-                  labelText: 'Correo',
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                onChanged: (value) => {_data['email'] = value},
-                style: const TextStyle(color: Colors.black),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _password,
-                validator: (input) {
-                  if (input!.isEmpty) {
-                    return 'Por favor ingrese una contraseña';
-                  }
-                  if (input.length < 6) {
-                    return 'Su contraseña debe tener al menos 6 caracteres';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: 'Contraseña',
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                onChanged: (value) =>
-                    {_data['password'] = value, _passwordValue = value},
-                obscureText: true,
-                style: const TextStyle(color: Colors.black),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextFormField(
-                controller: _confirmPassword,
-                validator: (input) {
-                  if (input!.isEmpty) {
-                    return 'Por favor ingrese una contraseña';
-                  }
-                  if (input != _passwordValue) {
-                    return 'Las contraseñas no coinciden';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: 'Confirmar contraseña',
-                  labelStyle: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                ),
-                obscureText: true,
-                style: const TextStyle(color: Colors.black),
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isCheckedusuario,
-                        onChanged: (value) {
-                          setState(() {
-                            _isCheckedusuario = value!;
-                            if (_isCheckedusuario == true) {
-                              _data["role"] = "usuario";
-                              _isCheckedconductor = false;
-                            }
-                          });
-                        },
-                      ),
-                      const Text("Usuario"),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isCheckedconductor,
-                        onChanged: (value) {
-                          setState(() {
-                            _isCheckedconductor = value!;
-                            if (_isCheckedconductor == true) {
-                              _data["role"] = "conductor";
-                              _isCheckedusuario = false;
-                            }
-                          });
-                        },
-                      ),
-                      const Text("Conductor"),
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              _registerController.isLoading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _submit,
-                      child: const Text(
-                        'Crear cuenta',
-                        style: TextStyle(color: Colors.white),
+      body: Container(
+        padding: const EdgeInsets.all(
+            16.0), // Aquí se establece el padding del Container
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage('assets/profile.jpg'),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 17.0),
+                        child: Text(
+                          'Crea una cuenta en UPB-Car',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        ),
                       ),
                     ),
-              _registerController.errorMessage != ""
-                  ? Text(
-                      _registerController.errorMessage,
-                      style: const TextStyle(color: Colors.red),
-                    )
-                  : Container(),
-              TextButton(
-                child: const Text('¿Ya tienes cuenta? iniciar sesión',
-                    style: TextStyle(color: Colors.black)),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => (const LoginPage())));
-                },
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: _name,
+                  validator: (input) {
+                    if (input!.isEmpty) {
+                      return 'Por favor ingrese un nombre';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person),
+                    labelText: 'Nombre',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  onChanged: (value) => {_data['name'] = value},
+                  style: const TextStyle(color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: _lastname,
+                  validator: (input) {
+                    if (input!.isEmpty) {
+                      return 'Por favor ingrese un apellido';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person),
+                    labelText: 'Apellido',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  onChanged: (value) => {_data['lastname'] = value},
+                  style: const TextStyle(color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: _phone,
+                  validator: (input) {
+                    if (input!.isEmpty) {
+                      return 'Por favor ingrese un número de teléfono';
+                    }
+                    return null;
+                  },
+                  onSaved: (newValue) => _phone,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.phone),
+                    labelText: 'Número de teléfono',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  onChanged: (value) => {_data['phone'] = value},
+                  style: const TextStyle(color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: _email,
+                  validator: (input) {
+                    if (input!.isEmpty) {
+                      return 'Por favor ingrese un correo electrónico';
+                    }
+                    if (!input.contains('@')) {
+                      return 'Por favor, introduce una dirección de correo electrónico válida';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.email),
+                    labelText: 'Correo',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  onChanged: (value) => {_data['email'] = value},
+                  style: const TextStyle(color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: _password,
+                  validator: (input) {
+                    if (input!.isEmpty) {
+                      return 'Por favor ingrese una contraseña';
+                    }
+                    if (input.length < 6) {
+                      return 'Su contraseña debe tener al menos 6 caracteres';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'Contraseña',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  onChanged: (value) =>
+                      {_data['password'] = value, _passwordValue = value},
+                  obscureText: true,
+                  style: const TextStyle(color: Colors.black),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: _confirmPassword,
+                  validator: (input) {
+                    if (input!.isEmpty) {
+                      return 'Por favor ingrese una contraseña';
+                    }
+                    if (input != _passwordValue) {
+                      return 'Las contraseñas no coinciden';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'Confirmar contraseña',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  obscureText: true,
+                  style: const TextStyle(color: Colors.black),
+                ),
+                Column(
+                  children: [
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Selecciona un tipo de usuario',
+                      ),
+                      value: _selectedRole,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedRole = newValue!;
+                          if (_selectedRole == "Pasajero") {
+                            _isCheckedusuario = true;
+                            _isCheckedconductor = false;
+                            _data["role"] = "usuario";
+                          } else if (_selectedRole == "Conductor") {
+                            _isCheckedusuario = false;
+                            _isCheckedconductor = true;
+                            _data["role"] = "conductor";
+                          } else {
+                            _isCheckedusuario = false;
+                            _isCheckedconductor = false;
+                            _data["role"] = null;
+                          }
+                        });
+                      },
+                      items: <String>['', 'Pasajero', 'Conductor']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                _registerController.isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: _submit,
+                        child: const Text(
+                          'Crear cuenta',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                _registerController.errorMessage != ""
+                    ? Text(
+                        _registerController.errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      )
+                    : Container(),
+                TextButton(
+                  child: const Text('¿Ya tienes cuenta? iniciar sesión',
+                      style: TextStyle(color: Colors.black)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => (const LoginPage())));
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
