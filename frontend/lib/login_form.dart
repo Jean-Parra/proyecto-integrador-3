@@ -34,112 +34,115 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FadeTransition(
-              opacity: _animation,
-              child: const CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('assets/profile.jpg'),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              validator: (input) {
-                if (input!.isEmpty) {
-                  return 'Por favor ingrese un correo electrónico';
-                }
-                if (!input.contains('@')) {
-                  return 'Por favor, introduce una dirección de correo electrónico válida';
-                }
-                return null;
-              },
-              onSaved: (input) => _email = input!,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.email),
-                labelText: 'Correo',
-                labelStyle:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FadeTransition(
+                opacity: _animation,
+                child: const CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/profile.jpg'),
                 ),
               ),
-              style: const TextStyle(color: Colors.black),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              validator: (input) {
-                if (input!.isEmpty) {
-                  return 'Por favor ingrese una contraseña';
-                }
-                if (input.length < 6) {
-                  return 'Su contraseña debe tener al menos 6 caracteres';
-                }
-                return null;
-              },
-              onSaved: (input) => _password = input!,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.lock),
-                labelText: 'Contraseña',
-                labelStyle:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                ),
+              const SizedBox(
+                height: 20,
               ),
-              obscureText: true,
-              style: const TextStyle(color: Colors.black),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            _loginController.isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _submit,
-                    child: const Text(
-                      'Iniciar sesión',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
+              TextFormField(
+                validator: (input) {
+                  if (input!.isEmpty) {
+                    return 'Por favor ingrese un correo electrónico';
+                  }
+                  if (!input.contains('@')) {
+                    return 'Por favor, introduce una dirección de correo electrónico válida';
+                  }
+                  return null;
+                },
+                onSaved: (input) => _email = input!,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  labelText: 'Correo',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
                   ),
-            const SizedBox(
-              height: 20,
-            ),
-            _loginController.errorMessage != ""
-                ? Text(
-                    _loginController.errorMessage,
-                    style: const TextStyle(color: Colors.red),
-                  )
-                : Container(),
-            TextButton(
-              child: const Text('¿No tienes cuenta? Registrate',
-                  style: TextStyle(color: Colors.black)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => (const SignupPage())));
-              },
-            ),
-            TextButton(
-              child: const Text('¿Olvidaste la contraseña?',
-                  style: TextStyle(color: Colors.black)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OlvidoPage()));
-              },
-            ),
-          ],
+                ),
+                style: const TextStyle(color: Colors.black),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                validator: (input) {
+                  if (input!.isEmpty) {
+                    return 'Por favor ingrese una contraseña';
+                  }
+                  if (input.length < 6) {
+                    return 'Su contraseña debe tener al menos 6 caracteres';
+                  }
+                  return null;
+                },
+                onSaved: (input) => _password = input!,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.lock),
+                  labelText: 'Contraseña',
+                  labelStyle: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                ),
+                obscureText: true,
+                style: const TextStyle(color: Colors.black),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              _loginController.isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _submit,
+                      child: const Text(
+                        'Inicia sesión',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+              const SizedBox(
+                height: 20,
+              ),
+              _loginController.errorMessage != ""
+                  ? Text(
+                      _loginController.errorMessage,
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  : Container(),
+              TextButton(
+                child: const Text('¿No tienes cuenta? Registrate',
+                    style: TextStyle(color: Colors.black)),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => (const SignupPage())));
+                },
+              ),
+              TextButton(
+                child: const Text('¿Olvidaste tu contraseña?',
+                    style: TextStyle(color: Colors.black)),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OlvidoPage()));
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
