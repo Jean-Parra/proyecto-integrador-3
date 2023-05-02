@@ -231,7 +231,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   RadioListTile(
-                                    title: Row(
+                                    title: const Row(
                                       children: [
                                         Icon(Icons.money),
                                         SizedBox(width: 10),
@@ -247,7 +247,7 @@ class _UsuarioPageState extends State<UsuarioPage> {
                                     },
                                   ),
                                   RadioListTile(
-                                    title: Row(
+                                    title: const Row(
                                       children: [
                                         Icon(Icons.credit_card),
                                         SizedBox(width: 10),

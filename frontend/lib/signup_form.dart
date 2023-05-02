@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_field, unrelated_type_equality_checks, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'controllers/userController.dart';
 
@@ -51,9 +50,9 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     CircleAvatar(
                       radius: 40,
                       backgroundImage: AssetImage('assets/profile.jpg'),
@@ -225,7 +224,7 @@ class _SignupPageState extends State<SignupPage> {
                 Column(
                   children: [
                     DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Selecciona un tipo de usuario',
                       ),
@@ -256,7 +255,7 @@ class _SignupPageState extends State<SignupPage> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                   ],
                 ),
                 const SizedBox(
@@ -304,9 +303,9 @@ class _SignupPageState extends State<SignupPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Términos y Condiciones'),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text(
                     '''Los presentes Términos y Condiciones regulan el acceso o uso que usted haga, como persona, desde cualquier lugar de la República de Colombia, de aplicaciones, páginas web, contenido, productos y servicios ofrecidos por la aplicación UPB-Car.
 
@@ -346,7 +345,7 @@ Acceso a la red y dispositivos.  Usted es responsable de obtener el acceso a la 
               onPressed: () {
                 Navigator.pop(context, false);
               },
-              child: Text('Rechazar'),
+              child: const Text('Rechazar'),
             ),
             TextButton(
               child: const Text('Aceptar'),
@@ -370,9 +369,9 @@ Acceso a la red y dispositivos.  Usted es responsable de obtener el acceso a la 
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Política de privacidad'),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text('''
 
 Al usar UPB-Car, sus datos están protegidos con nosotros. Esta política describe nuestras describe la información personal recopilada por UPB-Car, y cómo esta utiliza y protege los datos de los usuarios de nuestra aplicación móvil. 
@@ -419,7 +418,7 @@ Si tiene preguntas o comentarios sobre esta Política de Privacidad o sobre cóm
               onPressed: () {
                 Navigator.pop(context, false);
               },
-              child: Text('Rechazar'),
+              child: const Text('Rechazar'),
             ),
             TextButton(
               child: const Text('Aceptar'),

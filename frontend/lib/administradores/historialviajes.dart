@@ -1,10 +1,11 @@
-import 'dart:convert';
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import '../Models/vieja.dart';
 import '../controllers/routeController.dart';
 
 class HistorialAdministradorPage extends StatelessWidget {
-  const HistorialAdministradorPage({Key? key});
+  const HistorialAdministradorPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,9 @@ class HistorialAdministradorPage extends StatelessWidget {
                 final viaje = snapshot.data![index];
                 print(viaje.usuario);
                 return Container(
-                  padding: EdgeInsets.all(16),
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.all(16),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -32,7 +34,7 @@ class HistorialAdministradorPage extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -41,14 +43,14 @@ class HistorialAdministradorPage extends StatelessWidget {
                     children: [
                       Text(
                         'Id Viaje: ${viaje.id}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Text(
+                      const SizedBox(height: 8),
+                      const Text(
                         'Usuario:',
                         style: TextStyle(
                           fontSize: 16,
@@ -57,14 +59,14 @@ class HistorialAdministradorPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${viaje.usuario}',
-                        style: TextStyle(
+                        viaje.usuario,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
+                      const SizedBox(height: 4),
+                      const Text(
                         'Conductor:',
                         style: TextStyle(
                           fontSize: 16,
@@ -73,14 +75,14 @@ class HistorialAdministradorPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${viaje.conductor}',
-                        style: TextStyle(
+                        viaje.conductor,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 12),
-                      Text(
+                      const SizedBox(height: 12),
+                      const Text(
                         'Origen:',
                         style: TextStyle(
                           fontSize: 16,
@@ -89,14 +91,14 @@ class HistorialAdministradorPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${viaje.origin}',
-                        style: TextStyle(
+                        viaje.origin,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
+                      const SizedBox(height: 4),
+                      const Text(
                         'Destino:',
                         style: TextStyle(
                           fontSize: 16,
@@ -105,14 +107,14 @@ class HistorialAdministradorPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${viaje.destination}',
-                        style: TextStyle(
+                        viaje.destination,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 12),
-                      Text(
+                      const SizedBox(height: 12),
+                      const Text(
                         'Distancia:',
                         style: TextStyle(
                           fontSize: 16,
@@ -122,13 +124,13 @@ class HistorialAdministradorPage extends StatelessWidget {
                       ),
                       Text(
                         '${viaje.distance} Kilometros',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
+                      const SizedBox(height: 4),
+                      const Text(
                         'Precio:',
                         style: TextStyle(
                           fontSize: 16,
@@ -138,13 +140,13 @@ class HistorialAdministradorPage extends StatelessWidget {
                       ),
                       Text(
                         '${viaje.price} pesos',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
+                      const SizedBox(height: 4),
+                      const Text(
                         'Tipo de Pago:',
                         style: TextStyle(
                           fontSize: 16,
@@ -153,8 +155,8 @@ class HistorialAdministradorPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${viaje.selectedOption}',
-                        style: TextStyle(
+                        viaje.selectedOption,
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import '../controllers/routeController.dart';
 
 class HistorialUsuarioPage extends StatelessWidget {
@@ -14,7 +11,7 @@ class HistorialUsuarioPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Historial de viajes (USUARIO)'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -22,7 +19,7 @@ class HistorialUsuarioPage extends StatelessWidget {
         future: _getTripsAnduserEmailUser(),
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -31,12 +28,13 @@ class HistorialUsuarioPage extends StatelessWidget {
             );
           } else {
             final trips = snapshot.data![0];
+            // ignore: unused_local_variable
             final userEmail = snapshot.data![1];
 
             if (trips.isEmpty) {
               return Center(
                 child: Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(10.0),
@@ -58,8 +56,9 @@ class HistorialUsuarioPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 final trip = trips[index];
                 return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  padding: EdgeInsets.all(20),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
@@ -68,7 +67,7 @@ class HistorialUsuarioPage extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 3,
                         blurRadius: 7,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -77,7 +76,7 @@ class HistorialUsuarioPage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         'Viaje ${index + 1}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -90,49 +89,49 @@ class HistorialUsuarioPage extends StatelessWidget {
                         children: [
                           Text(
                             'Usuario: ${trip['user']}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Conductor: ${trip['driver']}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Origen: ${trip['origin']}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Destino: ${trip['destination']}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Distancia: ${trip['distance']} Kilometros',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Precio: ${trip['price']} pesos',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
                             'Metodo de pago: ${trip['selectedOption']}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),

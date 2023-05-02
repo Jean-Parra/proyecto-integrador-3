@@ -1,17 +1,18 @@
-import 'dart:convert';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/userController.dart';
 
+// ignore: must_be_immutable
 class UserProfileEditor extends StatefulWidget {
   final String authToken;
   final String userEmail;
-  late String _userEmail;
 
-  UserProfileEditor({required this.authToken, required this.userEmail});
+  const UserProfileEditor(
+      {super.key, required this.authToken, required this.userEmail});
 
   @override
   _UserProfileEditorState createState() => _UserProfileEditorState();
@@ -39,6 +40,7 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userEmail', widget.userEmail);
+    // ignore: unused_local_variable
     String? userEmail = prefs.getString('userEmail');
 
     setState(() {
@@ -58,15 +60,15 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar perfil'),
+        title: const Text('Editar perfil'),
         backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Tu correo es:',
               style: TextStyle(
                 fontSize: 18,
@@ -76,15 +78,15 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
             ),
             Text(
               widget.userEmail,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 color: Colors.red,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _nombreController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nombre',
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -97,10 +99,10 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
                 FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]+"))
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _apellidoController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Apellido',
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -113,11 +115,11 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
                 FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]+"))
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _telefonoController,
               keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Teléfono',
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -130,14 +132,14 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
                 FilteringTextInputFormatter.digitsOnly,
               ],
             ),
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: _isEditing
                   ? null
                   : () async {
                       _updateUserProfile();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           backgroundColor: Colors.green,
                           content: Row(
                             children: [
@@ -157,12 +159,12 @@ class _UserProfileEditorState extends State<UserProfileEditor> {
                       Navigator.pop(context);
                     },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blueAccent,
-                textStyle: TextStyle(
+                backgroundColor: Colors.blueAccent,
+                textStyle: const TextStyle(
                   fontSize: 20,
                 ),
               ),
-              child: Text('Actualizar perfil'),
+              child: const Text('Actualizar perfil'),
             ),
           ],
         ),

@@ -52,7 +52,7 @@ final profiles = [
         icon: Icons.travel_explore,
         title: "Historial de viajes",
         onTap: () {
-          Get.to(() => HistorialAdministradorPage());
+          Get.to(() => const HistorialAdministradorPage());
         },
       ),
       DrawerItem(
@@ -135,7 +135,7 @@ final profiles = [
         icon: Icons.settings,
         title: "Historial",
         onTap: () {
-          Get.to(() => HistorialConductorPage());
+          Get.to(() => const HistorialConductorPage());
         },
       ),
       DrawerItem(

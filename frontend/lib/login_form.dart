@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0),
+        margin: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -166,7 +166,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         await prefs.setString('userEdit', _email);
 
         String? driverEmail = prefs.getString('driverEmail');
+        // ignore: unused_local_variable
         String? userEmail = prefs.getString('userEmail');
+        // ignore: unused_local_variable
         String? userEdit = prefs.getString('userEdit');
         print('Su correo es: $driverEmail');
       } catch (e) {
