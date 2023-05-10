@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, unused_field, unrelated_type_equality_checks, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:proyecto_integrador_3/login_form.dart';
 import 'controllers/userController.dart';
 
@@ -122,9 +123,14 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 TextFormField(
                   controller: _phone,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (input) {
                     if (input!.isEmpty) {
                       return 'Por favor, ingrese un número de teléfono';
+                    }
+                    if (input.length != 10) {
+                      return 'El número de teléfono debe tener 10 dígitos';
                     }
                     return null;
                   },
@@ -254,6 +260,12 @@ class _SignupPageState extends State<SignupPage> {
                           child: Text(value),
                         );
                       }).toList(),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, selecciona un tipo de usuario';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 16),
                   ],
@@ -265,7 +277,7 @@ class _SignupPageState extends State<SignupPage> {
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: () {
-                          _mostrarTerminosYCondiciones();
+                          _submit();
                         },
                         child: const Text(
                           'Crear cuenta',
@@ -350,10 +362,14 @@ Acceso a la red y dispositivos.  Usted es responsable de obtener el acceso a la 
             TextButton(
               child: const Text('Aceptar'),
               onPressed: () {
-                Navigator.of(context).pop();
-                _aceptadoTerminos =
-                    true; // marcar los términos y condiciones como aceptados
-                _mostrarPoliticaPrivacidad();
+                if (_formKey.currentState!.validate()) {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _aceptadoTerminos = true;
+                  });
+
+                  _mostrarPoliticaPrivacidad();
+                }
               },
             ),
           ],
@@ -424,8 +440,9 @@ Si tiene preguntas o comentarios sobre esta Política de Privacidad o sobre cóm
               child: const Text('Aceptar'),
               onPressed: () {
                 Navigator.of(context).pop();
-                _aceptadaPolitica = true;
-                _submit();
+                setState(() {
+                  _aceptadaPolitica = true;
+                });
               },
             ),
           ],
@@ -435,22 +452,27 @@ Si tiene preguntas o comentarios sobre esta Política de Privacidad o sobre cóm
   }
 
   Future<void> _submit() async {
-    if (_isCheckedconductor == false && _isCheckedusuario == false) {
-      setState(() {
-        _registerController.errorMessage =
-            "Debe seleccionar un tipo de usuario";
-      });
-      return;
-    }
     if (_formKey.currentState!.validate()) {
       setState(() {
         _registerController.isLoading = true;
       });
       _formKey.currentState!.save();
       try {
-        _registerController.register(_data["name"], _data["lastname"],
-            _data["phone"], _data["email"], _data["password"], _data["role"]);
-        _registerController.isLoading = false;
+        await _mostrarTerminosYCondiciones();
+        if (_aceptadaPolitica && _aceptadoTerminos) {
+          await _registerController.register(_data["name"], _data["lastname"],
+              _data["phone"], _data["email"], _data["password"], _data["role"]);
+          setState(() {
+            _registerController.isLoading = false;
+          });
+          print("Registrado");
+        } else {
+          setState(() {
+            _registerController.isLoading = false;
+            _registerController.errorMessage =
+                "Debes aceptar nuestros terminos y politicas";
+          });
+        }
       } catch (e) {
         setState(() {
           _registerController.isLoading = false;

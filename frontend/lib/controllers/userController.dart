@@ -132,6 +132,7 @@ class RegisterController {
 
         await sharedPreferences.setString("token", jsonResponse['token']);
         User user = User.fromJson(jsonResponse['user']);
+        print(jsonResponse['user']['role']);
         switch (jsonResponse['user']['role']) {
           case 'administrador':
             print("administrador");
